@@ -15,7 +15,7 @@ public class ActivityData implements Serializable {
 	}
 	
 	public void setName(String name){
-		this.name = name.replace("\"", " ");
+		this.name = name.replace("\"", "_");
 	}
 	
 	public String getName(){

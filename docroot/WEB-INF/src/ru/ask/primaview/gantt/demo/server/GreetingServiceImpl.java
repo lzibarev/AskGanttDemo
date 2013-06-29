@@ -15,7 +15,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	@Override
 	public GanttData getWbsDataList(String name) throws IllegalArgumentException {
 		GanttData data;
-		boolean isTempData = true;
+		boolean isTempData = false;
 		System.out.println("service " + name);
 		if (isTempData) {
 			data = PrimavraTestEmulator.getTempData();
@@ -24,5 +24,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 		return data;
 	}
+	
 
 }

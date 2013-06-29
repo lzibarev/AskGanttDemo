@@ -1,20 +1,28 @@
 package ru.ask.primaview.gantt.demo.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
+import ru.ask.primaview.gantt.demo.server.testutils.SerializeTempDataUtils;
 import ru.ask.primaview.gantt.demo.shared.data.ActivityData;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
-	
-	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service){
-		if (service==null)
+
+	private static boolean offline = true;
+
+	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service) {
+		if (offline) {
+			return SerializeTempDataUtils.getDataWbs(PrimaCostants.PROJECT_ID);
+		}
+		if (service == null)
 			service = new PrimaveraService();
 		DataWBS[] works = service.GetWBS(projectId);
 		return works;
@@ -24,10 +32,18 @@ public class PrimaveraDataServiceUtils {
 		GanttData data = null;
 		List<WbsData> list = new ArrayList<WbsData>();
 		try {
-			PrimaveraService service = new PrimaveraService();
+			PrimaveraService service = null;
+			String projectName;
+			if (!offline) {
+				service = new PrimaveraService();
+				DataProject project = service.GetProject(projectId);
+				projectName = project.getName();
 
-			DataProject project = service.GetProject(projectId);
-			System.out.println(project.getName());
+			} else {
+				projectName = "offlie";
+			}
+
+			System.out.println(projectName);
 			System.out.println("start");
 			DataWBS[] works = getWbsArrayFromProject(projectId, service);
 
@@ -37,7 +53,7 @@ public class PrimaveraDataServiceUtils {
 			}
 			System.out.println("finish");
 			data = new GanttData(list);
-			data.setName(project.getName());
+			data.setName(projectName);
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -53,7 +69,8 @@ public class PrimaveraDataServiceUtils {
 				ActivityData activityData = new ActivityData();
 				activityData.setName(activity.getName() + " " + activity.getId() + " " + activity.getBsStart() + " "
 						+ activity.getBsFinish());
-				activityData.setPlanStart(activity.getBsStart());
+//				activityData.setPlanStart(activity.getBsStart());
+				activityData.setPlanStart(new Date());
 				activityData.setDuration(10);
 				wbsData.addActivity(activityData);
 			}
@@ -66,6 +83,5 @@ public class PrimaveraDataServiceUtils {
 		}
 		return wbsData;
 	}
-
 
 }
