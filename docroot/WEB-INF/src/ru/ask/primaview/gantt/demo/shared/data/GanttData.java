@@ -17,7 +17,7 @@ public class GanttData implements Serializable {
 	}
 
 	public void setName(String value) {
-		name = value;
+		name = value.replace("/", "_");
 	}
 
 	public String getName() {

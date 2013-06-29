@@ -12,6 +12,13 @@ import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
+	
+	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service){
+		if (service==null)
+			service = new PrimaveraService();
+		DataWBS[] works = service.GetWBS(projectId);
+		return works;
+	}
 
 	public static GanttData getFromProject(int projectId) {
 		GanttData data = null;
@@ -22,7 +29,7 @@ public class PrimaveraDataServiceUtils {
 			DataProject project = service.GetProject(projectId);
 			System.out.println(project.getName());
 			System.out.println("start");
-			DataWBS[] works = service.GetWBS(projectId);
+			DataWBS[] works = getWbsArrayFromProject(projectId, service);
 
 			for (int i = 0; i < works.length; i++) {
 				WbsData wbsData = getWbsData(works[i]);

@@ -10,15 +10,20 @@ import java.io.ObjectOutputStream;
 import ru.ask.primaview.gantt.demo.server.PrimaveraDataServiceUtils;
 import ru.ask.primaview.gantt.demo.server.PrimavraTestEmulator;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
+import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 public class SeriazileTempDataUtils {
 
 	public static void serializeAndSaveGanttData(GanttData value) {
+		String fileName = value.getName() + ".data";
+		serializeAndSaveObject(value, fileName);
+	}
+	
+	private static void serializeAndSaveObject(Object value, String fileName){
 		try {
 			ObjectOutputStream oos = null;
 			try {
-				String fileName = value.getName() + ".data";
 				oos = new ObjectOutputStream(new FileOutputStream(fileName));
 				oos.writeObject(value);
 				System.out.println("write in " + fileName);
@@ -30,18 +35,21 @@ public class SeriazileTempDataUtils {
 			System.err.println("cannot create a file with the given file name ");
 		} catch (IOException ioe) {
 			System.err.println("an I/O error occurred while processing the file");
-		}
+		}		
 	}
 
 	public static GanttData getGanttDataFromFile(String name) {
+		String fileName = name + ".data";
+		return (GanttData)getObjectFromFile(fileName);
+	}
+	
+	private static Object getObjectFromFile(String fileName){
 		try {
 			ObjectInputStream ois = null;
 			try {
-				String fileName = name + ".data";
 				ois = new ObjectInputStream(new FileInputStream(fileName));
 				Object obj = ois.readObject();
-				if (obj instanceof GanttData)
-					return (GanttData) obj;
+				return obj;
 			} finally {
 				ois.close();
 			}
@@ -52,8 +60,8 @@ public class SeriazileTempDataUtils {
 		} catch (ClassNotFoundException cnfe) {
 			System.err.println("cannot recognize the class of the object - is the file corrupted?");
 		}
-
 		return null;
+		
 	}
 
 	private static void testSerializationData(GanttData dataSource) {
@@ -63,12 +71,31 @@ public class SeriazileTempDataUtils {
 	}
 
 	public static void main(String[] args) {
-		boolean testMode = true;
+		boolean sereilizeGantt = false;
+		if (sereilizeGantt)
+			serializeGanttData();
+		else
+			serializeSourceData();
+	}
+	
+	private static void serializeSourceData(){
+		System.out.println("SeriazileTempDataUtils.serializeSourceData()");;
+		String fileName = "wbs_project_"+PrimaCostants.PROJECT_ID+".data";
+		Object array = PrimaveraDataServiceUtils.getWbsArrayFromProject(PrimaCostants.PROJECT_ID, null);
+		serializeAndSaveObject(array, fileName);
+		Object object = getObjectFromFile(fileName);
+		if (object instanceof DataWBS[]){
+			System.out.println(((DataWBS[])object).length);
+		}
+	}
+	
+	private static void serializeGanttData(){
+		boolean testMode = false;
 		GanttData data = null;
 		if (testMode)
 			data = PrimavraTestEmulator.getTempData();
 		else
 			data = PrimaveraDataServiceUtils.getFromProject(PrimaCostants.PROJECT_ID);
-		testSerializationData(data);
+		testSerializationData(data);		
 	}
 }
