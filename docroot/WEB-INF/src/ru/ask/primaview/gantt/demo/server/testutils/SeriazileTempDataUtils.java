@@ -1,8 +1,15 @@
 package ru.ask.primaview.gantt.demo.server.testutils;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
+import ru.ask.primaview.gantt.demo.server.PrimaveraDataServiceUtils;
 import ru.ask.primaview.gantt.demo.server.PrimavraTestEmulator;
+import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 public class SeriazileTempDataUtils {
@@ -49,18 +56,19 @@ public class SeriazileTempDataUtils {
 		return null;
 	}
 
-	private static void testEmulationData() {
-		GanttData dataSource = PrimavraTestEmulator.getTempData();
+	private static void testSerializationData(GanttData dataSource) {
 		serializeAndSaveGanttData(dataSource);
 		GanttData data = getGanttDataFromFile(dataSource.getName());
 		System.out.println(data.getName());
 	}
 
-	private static void testProjectData() {
-		// TODO:
-	}
-
 	public static void main(String[] args) {
-		testEmulationData();
+		boolean testMode = true;
+		GanttData data = null;
+		if (testMode)
+			data = PrimavraTestEmulator.getTempData();
+		else
+			data = PrimaveraDataServiceUtils.getFromProject(PrimaCostants.PROJECT_ID);
+		testSerializationData(data);
 	}
 }
