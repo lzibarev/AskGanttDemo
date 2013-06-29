@@ -1,6 +1,7 @@
 package ru.ask.primaview.gantt.demo.shared.data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class GanttData implements Serializable {
@@ -8,6 +9,7 @@ public class GanttData implements Serializable {
 
 	private List<WbsData> wbss;
 	private String name;
+	private Date dateStart;
 
 	public GanttData() {
 	}
@@ -30,5 +32,13 @@ public class GanttData implements Serializable {
 
 	public List<WbsData> getWbss() {
 		return wbss;
+	}
+
+	public void setDateStart(Date value) {
+		dateStart = value;
+	}
+
+	public Date getDateStart() {
+		return dateStart;
 	}
 }

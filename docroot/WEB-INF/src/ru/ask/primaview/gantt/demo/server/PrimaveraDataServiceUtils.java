@@ -20,7 +20,9 @@ public class PrimaveraDataServiceUtils {
 
 	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service) {
 		if (offline) {
-			return SerializeTempDataUtils.getDataWbs(PrimaCostants.PROJECT_ID);
+			DataWBS[] data = SerializeTempDataUtils.getDataWbs(PrimaCostants.PROJECT_ID);
+			DataWBS[] result = new DataWBS[] { data[0], data[1], data[2], data[3]};
+			return result;
 		}
 		if (service == null)
 			service = new PrimaveraService();
@@ -54,6 +56,15 @@ public class PrimaveraDataServiceUtils {
 			System.out.println("finish");
 			data = new GanttData(list);
 			data.setName(projectName);
+
+			Date minDate = new Date();
+			for (WbsData wbsData : list) {
+				if (wbsData.getPnalStart() == null)
+					continue;
+				if (minDate.after(wbsData.getPnalStart()))
+					minDate = wbsData.getPnalStart();
+			}
+			data.setDateStart(minDate);
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -64,13 +75,22 @@ public class PrimaveraDataServiceUtils {
 	private static WbsData getWbsData(DataWBS wbs) {
 		WbsData wbsData = new WbsData();
 		wbsData.setName(wbs.getName() + " " + wbs.getId());
+
+		if (wbs.getBsStart() != null) {
+			System.out.println("not null bs");
+			Date wbsPlanDate = new Date(wbs.getBsStart().getTime());
+			wbsData.setPlanStart(wbsPlanDate);
+		}
+		if (wbs.getStart() != null) {
+			System.out.println("not null");
+		}
+		wbsData.setDuration(10);
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
 				ActivityData activityData = new ActivityData();
-				activityData.setName(activity.getName() + " " + activity.getId() + " " + activity.getBsStart() + " "
-						+ activity.getBsFinish());
-//				activityData.setPlanStart(activity.getBsStart());
-				activityData.setPlanStart(new Date());
+				activityData.setName(activity.getName() + " " + activity.getId());
+				Date planStart = new Date(activity.getBsStart().getTime());
+				activityData.setPlanStart(planStart);
 				activityData.setDuration(10);
 				wbsData.addActivity(activityData);
 			}

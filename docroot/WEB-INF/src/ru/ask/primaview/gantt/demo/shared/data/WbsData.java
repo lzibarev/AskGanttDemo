@@ -2,14 +2,17 @@ package ru.ask.primaview.gantt.demo.shared.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WbsData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public List<ActivityData> activities;
-	public List<WbsData> childs;
-	public String name;
+	private List<ActivityData> activities;
+	private List<WbsData> childs;
+	private String name;
+	private Date planStart;
+	private int duration;
 
 	public WbsData() {
 		activities = new ArrayList<ActivityData>();
@@ -17,7 +20,7 @@ public class WbsData implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name.replace("\"", " ");
+		this.name = name.replace("\"", "_");
 	}
 
 	public void addActivity(ActivityData acticity) {
@@ -38,5 +41,21 @@ public class WbsData implements Serializable {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setPlanStart(Date value) {
+		planStart = value;
+	}
+
+	public Date getPnalStart() {
+		return planStart;
+	}
+
+	public void setDuration(int value) {
+		duration = value;
+	}
+
+	public int getDuration() {
+		return duration;
 	}
 }
