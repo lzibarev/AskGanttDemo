@@ -6,11 +6,13 @@ import java.util.List;
 
 import ru.ask.primaview.gantt.demo.client.dummydata.DemoData1;
 import ru.ask.primaview.gantt.demo.client.dummydata.DemoData2;
+import ru.ask.primaview.gantt.demo.client.dummydata.DemoData3;
 import ru.ask.primaview.gantt.demo.client.dummydata.Dependency;
 import ru.ask.primaview.gantt.demo.client.dummydata.DependencyProps;
 import ru.ask.primaview.gantt.demo.client.dummydata.IDemoData;
 import ru.ask.primaview.gantt.demo.client.dummydata.Task;
 import ru.ask.primaview.gantt.demo.client.dummydata.TaskProps;
+import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
@@ -51,6 +53,12 @@ import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
 
 public class GanttExample implements IsWidget {
 
+	public GanttExample(List<WbsData> data){
+		this.dataWbs = data;
+	}
+	
+	private List<WbsData> dataWbs;
+	
 	public interface GanttExampleStyle extends CssResource {
 	}
 
@@ -74,7 +82,14 @@ public class GanttExample implements IsWidget {
 	
 	@Override
 	public Widget asWidget() {
-		setData(new DemoData1());
+		//resources
+		
+		IDemoData data;
+		if (dataWbs!=null)
+			data = new DemoData3(dataWbs);
+		else
+			data = new DemoData2();
+		setData(data);
 
 		GanttConfig config = new GanttConfig();
 		// ColumnModel for left static columns
@@ -138,20 +153,6 @@ public class GanttExample implements IsWidget {
 
 		};
 
-		// Editing
-//		GridInlineEditing<Task> editing = new GridInlineEditing<Task>(
-//				gantt.getLeftGrid());
-//		editing.addEditor(config.leftColumns.getColumn(0), new TextField());
-//		editing.addEditor(config.leftColumns.getColumn(1), new DateField());
-//		editing.addEditor(config.leftColumns.getColumn(2),
-//				new SpinnerField<Integer>(new IntegerPropertyEditor()));
-//		SpinnerField<Integer> spinner = new SpinnerField<Integer>(
-//				new IntegerPropertyEditor());
-//		spinner.setMinValue(0);
-//		spinner.setMaxValue(100);
-//		spinner.setIncrement(10);
-//		editing.addEditor(config.leftColumns.getColumn(3), spinner);
-
 		gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {
 			@Override
 			public void onViewReady(ViewReadyEvent event) {
@@ -161,7 +162,7 @@ public class GanttExample implements IsWidget {
 
 		DateWrapper dw = new DateWrapper(new Date()).clearTime();
 		// Set start and end date.
-		gantt.setStartEnd(dw.addDays(-7).asDate(), dw.addMonths(1).asDate());
+		gantt.setStartEnd(dw.addDays(-21).asDate(), dw.addMonths(1).asDate());
 
 		
 		ContentPanel cp = new ContentPanel();
