@@ -62,7 +62,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<WbsData> getWbsDataList(String name)
 			throws IllegalArgumentException {
-		boolean isTempData = false;
+		boolean isTempData = true;
 		System.out.println("service "+name);
 		if (isTempData){
 			return getTempData();
