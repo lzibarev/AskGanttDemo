@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import ru.ask.primaview.gantt.demo.shared.data.ActivityData;
+import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 import com.gantt.client.config.GanttConfig.TaskType;
@@ -12,9 +13,9 @@ import com.sencha.gxt.core.client.util.DateWrapper;
 
 public class DemoData3 implements IDemoData {
 
-	private List<WbsData> data;
+	private GanttData data;
 
-	public DemoData3(List<WbsData> data) {
+	public DemoData3(GanttData data) {
 		this.data = data;
 	}
 
@@ -23,7 +24,7 @@ public class DemoData3 implements IDemoData {
 		DateWrapper dw = new DateWrapper(new Date()).clearTime().addDays(-7);
 
 		ArrayList<Task> list = new ArrayList<Task>();
-		for (WbsData wbs : data) {
+		for (WbsData wbs : data.getWbss()) {
 			Task task = getTaskByWbs(wbs, dw);
 			list.add(task);
 		}

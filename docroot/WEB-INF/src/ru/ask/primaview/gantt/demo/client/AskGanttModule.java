@@ -1,9 +1,7 @@
 package ru.ask.primaview.gantt.demo.client;
 
-import java.util.List;
-
 import ru.ask.primaview.gantt.demo.client.bacisgantt.GanttExample;
-import ru.ask.primaview.gantt.demo.shared.data.WbsData;
+import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,10 +19,10 @@ public class AskGanttModule implements EntryPoint {
 //		final Label l = new Label();
 //		l.setText("test1");
 //		RootPanel.get("ganttDemo").add(l);
-		greetingService.getWbsDataList("test2", new AsyncCallback<List<WbsData>>() {
+		greetingService.getWbsDataList("test2", new AsyncCallback<GanttData>() {
 			
 			@Override
-			public void onSuccess(List<WbsData> data) {
+			public void onSuccess(GanttData data) {
 				GanttExample gantt = new GanttExample(data);
 				RootPanel.get("ganttDemo").add(gantt);				
 			}

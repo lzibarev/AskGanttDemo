@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ActivityData implements Serializable {
-
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private Date planStart;
-	private Date planFinish;
+	private int duration;
 	
 	public ActivityData(){
 		
@@ -27,12 +28,13 @@ public class ActivityData implements Serializable {
 	public Date getPnalStart(){
 		return planStart;
 	}
-	
-	public void setPlanFinish(Date value){
-		planFinish = value;
+
+	public void setDuration(int value){
+		duration = value;
 	}
-	public Date getPlanFinish(){
-		return planFinish;
+	
+	public int getDuration(){
+		return duration;
 	}
 
 }

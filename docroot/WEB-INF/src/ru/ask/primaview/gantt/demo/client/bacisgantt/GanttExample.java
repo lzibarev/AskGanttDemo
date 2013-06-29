@@ -12,7 +12,7 @@ import ru.ask.primaview.gantt.demo.client.dummydata.DependencyProps;
 import ru.ask.primaview.gantt.demo.client.dummydata.IDemoData;
 import ru.ask.primaview.gantt.demo.client.dummydata.Task;
 import ru.ask.primaview.gantt.demo.client.dummydata.TaskProps;
-import ru.ask.primaview.gantt.demo.shared.data.WbsData;
+import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
@@ -53,11 +53,11 @@ import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
 
 public class GanttExample implements IsWidget {
 
-	public GanttExample(List<WbsData> data){
-		this.dataWbs = data;
+	public GanttExample(GanttData data){
+		this.ganttData = data;
 	}
 	
-	private List<WbsData> dataWbs;
+	private GanttData ganttData;
 	
 	public interface GanttExampleStyle extends CssResource {
 	}
@@ -85,8 +85,8 @@ public class GanttExample implements IsWidget {
 		//resources
 		
 		IDemoData data;
-		if (dataWbs!=null)
-			data = new DemoData3(dataWbs);
+		if (ganttData!=null)
+			data = new DemoData3(ganttData);
 		else
 			data = new DemoData2();
 		setData(data);
