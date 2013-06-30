@@ -12,10 +12,12 @@ public class WbsData implements Serializable {
 	private List<WbsData> childs;
 	private String name;
 	private Date planStart;
+	private Date planFinish;
 	private int duration;
 
 	public WbsData() {
 		planStart = new Date();
+		planFinish = new Date();
 		duration = 1;
 		activities = new ArrayList<ActivityData>();
 		childs = new ArrayList<WbsData>();
@@ -51,6 +53,14 @@ public class WbsData implements Serializable {
 
 	public Date getPnalStart() {
 		return planStart;
+	}
+
+	public void setPlanFinish(Date value) {
+		planFinish = value;
+	}
+
+	public Date getPlanFinish() {
+		return planFinish;
 	}
 
 	public void setDuration(int value) {

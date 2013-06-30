@@ -21,8 +21,10 @@ public class PrimaveraDataServiceUtils {
 	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service) {
 		if (offline) {
 			DataWBS[] data = SerializeTempDataUtils.getDataWbs(PrimaCostants.PROJECT_ID);
-			DataWBS[] result = new DataWBS[] { data[0], data[1], data[2], data[3]};
-			return result;
+			// DataWBS[] result = new DataWBS[] { data[0], data[1], data[2],
+			// data[3] };
+			// return result;
+			return data;
 		}
 		if (service == null)
 			service = new PrimaveraService();
@@ -56,19 +58,27 @@ public class PrimaveraDataServiceUtils {
 			System.out.println("finish");
 			data = new GanttData(list);
 			data.setName(projectName);
-
-			Date minDate = new Date();
-			for (WbsData wbsData : list) {
-				if (wbsData.getPnalStart() == null)
-					continue;
-				if (minDate.after(wbsData.getPnalStart()))
-					minDate = wbsData.getPnalStart();
-			}
-			data.setDateStart(minDate);
+			setMinMaxDate(data);
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
 		return data;
+
+	}
+
+	// TODO: переделать так как дата может быть и в нижележащих уровнях. надо
+	// переделать на сервис - экхемпляр
+	private static void setMinMaxDate(GanttData data) {
+		Date minDate = new Date();
+		Date maxDate = new Date();
+		for (WbsData wbsData : data.getWbss()) {
+			if (wbsData.getPnalStart() != null && minDate.after(wbsData.getPnalStart()))
+				minDate = wbsData.getPnalStart();
+			if (wbsData.getPlanFinish() != null && maxDate.before(wbsData.getPlanFinish()))
+				maxDate = wbsData.getPlanFinish();
+		}
+		data.setDateStart(minDate);
+		data.setDateFinish(maxDate);
 
 	}
 
@@ -77,21 +87,27 @@ public class PrimaveraDataServiceUtils {
 		wbsData.setName(wbs.getName() + " " + wbs.getId());
 
 		if (wbs.getBsStart() != null) {
-			System.out.println("not null bs");
 			Date wbsPlanDate = new Date(wbs.getBsStart().getTime());
 			wbsData.setPlanStart(wbsPlanDate);
 		}
-		if (wbs.getStart() != null) {
-			System.out.println("not null");
+		if (wbs.getBsFinish() != null) {
+			Date wbsPlanDate = new Date(wbs.getBsFinish().getTime());
+			wbsData.setPlanFinish(wbsPlanDate);
 		}
-		wbsData.setDuration(10);
+		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPnalStart().getTime();
+		int days = (int) difference / (24 * 60 * 60 * 1000);
+		wbsData.setDuration(days);
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
 				ActivityData activityData = new ActivityData();
 				activityData.setName(activity.getName() + " " + activity.getId());
 				Date planStart = new Date(activity.getBsStart().getTime());
+				Date planFinish = new Date(activity.getBsFinish().getTime());
 				activityData.setPlanStart(planStart);
-				activityData.setDuration(10);
+				activityData.setPlanFinish(planFinish);
+				difference = planFinish.getTime() - planStart.getTime();
+				days = (int) difference / (24 * 60 * 60 * 1000);
+				activityData.setDuration(days);
 				wbsData.addActivity(activityData);
 			}
 		}

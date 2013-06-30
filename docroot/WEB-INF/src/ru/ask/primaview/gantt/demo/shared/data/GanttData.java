@@ -10,6 +10,7 @@ public class GanttData implements Serializable {
 	private List<WbsData> wbss;
 	private String name;
 	private Date dateStart;
+	private Date dateFinish;
 
 	public GanttData() {
 	}
@@ -40,5 +41,13 @@ public class GanttData implements Serializable {
 
 	public Date getDateStart() {
 		return dateStart;
+	}
+
+	public void setDateFinish(Date value) {
+		dateFinish = value;
+	}
+
+	public Date getDateFinish() {
+		return dateFinish;
 	}
 }

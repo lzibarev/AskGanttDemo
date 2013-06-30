@@ -8,10 +8,12 @@ public class ActivityData implements Serializable {
 
 	private String name;
 	private Date planStart;
+	private Date planFinish;
 	private int duration;
 
 	public ActivityData() {
 		planStart = new Date();
+		planFinish = new Date();
 		duration = 1;
 
 	}
@@ -30,6 +32,14 @@ public class ActivityData implements Serializable {
 
 	public Date getPnalStart() {
 		return planStart;
+	}
+
+	public void setPlanFinish(Date value) {
+		planFinish = value;
+	}
+
+	public Date getPlanFinish() {
+		return planFinish;
 	}
 
 	public void setDuration(int value) {
