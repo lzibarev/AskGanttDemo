@@ -15,6 +15,8 @@ public class WbsData implements Serializable {
 	private int duration;
 
 	public WbsData() {
+		planStart = new Date();
+		duration = 1;
 		activities = new ArrayList<ActivityData>();
 		childs = new ArrayList<WbsData>();
 	}

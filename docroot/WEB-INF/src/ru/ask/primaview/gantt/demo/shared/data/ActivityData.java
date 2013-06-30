@@ -5,35 +5,38 @@ import java.util.Date;
 
 public class ActivityData implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private String name;
 	private Date planStart;
 	private int duration;
-	
-	public ActivityData(){
-		
+
+	public ActivityData() {
+		planStart = new Date();
+		duration = 1;
+
 	}
-	
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name.replace("\"", "_");
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
-	public void setPlanStart(Date value){
+
+	public void setPlanStart(Date value) {
 		planStart = value;
 	}
-	public Date getPnalStart(){
+
+	public Date getPnalStart() {
 		return planStart;
 	}
 
-	public void setDuration(int value){
+	public void setDuration(int value) {
 		duration = value;
 	}
-	
-	public int getDuration(){
+
+	public int getDuration() {
 		return duration;
 	}
 

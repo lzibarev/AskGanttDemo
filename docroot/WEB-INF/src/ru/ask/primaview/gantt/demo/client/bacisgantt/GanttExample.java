@@ -160,9 +160,9 @@ public class GanttExample implements IsWidget {
 			}
 		});
 
-		DateWrapper dw = new DateWrapper(new Date()).clearTime();
+		DateWrapper dw = new DateWrapper(ganttData.getDateStart()).clearTime();
 		// Set start and end date.
-		gantt.setStartEnd(dw.addDays(-21).asDate(), dw.addMonths(1).asDate());
+		gantt.setStartEnd(dw.addDays(-7).asDate(), dw.addMonths(12).asDate());
 
 		
 		ContentPanel cp = new ContentPanel();
