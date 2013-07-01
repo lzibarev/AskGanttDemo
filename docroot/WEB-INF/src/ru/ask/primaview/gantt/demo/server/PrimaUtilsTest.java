@@ -1,14 +1,17 @@
 package ru.ask.primaview.gantt.demo.server;
 
+import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
-import ru.ask.primaview.gantt.demo.server.prima.utility.*;
+import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
+import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
+import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
 
 public class PrimaUtilsTest {
 	private static int offset;
 
 	public static void main(String[] args){
 		GreetingServiceImpl service = new GreetingServiceImpl();
-		service.getWbsDataList("test1");
+		service.getWbsDataList(String.valueOf(PrimaCostants.PROJECT_ID), true);
 	}
 	
 	public static void main1(String[] args) {

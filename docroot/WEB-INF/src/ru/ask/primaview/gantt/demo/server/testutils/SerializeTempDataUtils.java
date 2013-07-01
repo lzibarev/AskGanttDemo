@@ -88,10 +88,8 @@ public class SerializeTempDataUtils {
 	private static void serializeSourceData() {
 		System.out.println("SeriazileTempDataUtils.serializeSourceData()");
 		String fileName = getSourceDataFileName(PrimaCostants.PROJECT_ID);
-		Object array = PrimaveraDataServiceUtils.getWbsArrayFromProject(PrimaCostants.PROJECT_ID, null);
+		Object array = PrimaveraDataServiceUtils.getWbsArrayFromProject(PrimaCostants.PROJECT_ID, true, null);
 		serializeAndSaveObject(array, fileName);
-//		DataWBS[] result = getDataWbs(PrimaCostants.PROJECT_ID);
-//		System.out.println(result.length);
 		System.out.println("finish");
 	}
 	
@@ -109,7 +107,7 @@ public class SerializeTempDataUtils {
 		if (testMode)
 			data = PrimavraTestEmulator.getTempData();
 		else
-			data = PrimaveraDataServiceUtils.getFromProject(PrimaCostants.PROJECT_ID);
+			data = PrimaveraDataServiceUtils.getFromProject(PrimaCostants.PROJECT_ID, true);
 		testSerializationData(data);
 	}
 }

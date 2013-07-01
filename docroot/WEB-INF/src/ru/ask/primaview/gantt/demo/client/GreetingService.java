@@ -11,5 +11,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	GanttData getWbsDataList(String name) throws IllegalArgumentException;
+	GanttData getWbsDataList(String projectIdStr, boolean offline) throws IllegalArgumentException;
 }

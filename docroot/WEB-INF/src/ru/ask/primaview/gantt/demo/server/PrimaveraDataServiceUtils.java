@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
@@ -16,15 +15,9 @@ import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
 
-	private static boolean offline = true;
-
-	public static DataWBS[] getWbsArrayFromProject(int projectId, PrimaveraService service) {
+	public static DataWBS[] getWbsArrayFromProject(int projectId, boolean offline, PrimaveraService service) {
 		if (offline) {
-			DataWBS[] data = SerializeTempDataUtils.getDataWbs(PrimaCostants.PROJECT_ID);
-			// DataWBS[] result = new DataWBS[] { data[0], data[1], data[2],
-			// data[3] };
-			// return result;
-			return data;
+			return SerializeTempDataUtils.getDataWbs(projectId);
 		}
 		if (service == null)
 			service = new PrimaveraService();
@@ -32,7 +25,7 @@ public class PrimaveraDataServiceUtils {
 		return works;
 	}
 
-	public static GanttData getFromProject(int projectId) {
+	public static GanttData getFromProject(int projectId, boolean offline) {
 		GanttData data = null;
 		List<WbsData> list = new ArrayList<WbsData>();
 		try {
@@ -49,7 +42,7 @@ public class PrimaveraDataServiceUtils {
 
 			System.out.println(projectName);
 			System.out.println("start");
-			DataWBS[] works = getWbsArrayFromProject(projectId, service);
+			DataWBS[] works = getWbsArrayFromProject(projectId, offline, service);
 
 			for (int i = 0; i < works.length; i++) {
 				WbsData wbsData = getWbsData(works[i]);

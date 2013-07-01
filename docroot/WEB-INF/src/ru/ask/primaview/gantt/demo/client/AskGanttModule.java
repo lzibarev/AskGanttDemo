@@ -13,6 +13,7 @@ import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
@@ -27,14 +28,20 @@ public class AskGanttModule implements EntryPoint {
 
 	private Container getInputIdContainer() {
 		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
-		TextField idText = new TextField();
+		final TextField idText = new TextField();
 		idText.setText("561");
 		container.add(new FieldLabel(idText, "Введите ид проекта"));
+		final CheckBox offlineCheckBox = new CheckBox();
+		offlineCheckBox.setBoxLabel("offline");
+		offlineCheckBox.setValue(true);
+		container.add(offlineCheckBox);
 		TextButton button = new TextButton("Построить график");
 		SelectHandler sh = new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				greetingService.getWbsDataList("test2", new AsyncCallback<GanttData>() {
+				String projectIdStr = idText.getText();
+				boolean offline = offlineCheckBox.getValue();
+				greetingService.getWbsDataList(projectIdStr, offline, new AsyncCallback<GanttData>() {
 
 					@Override
 					public void onSuccess(GanttData data) {
