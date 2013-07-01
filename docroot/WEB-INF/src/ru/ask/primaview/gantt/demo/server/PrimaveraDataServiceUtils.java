@@ -95,7 +95,7 @@ public class PrimaveraDataServiceUtils {
 			wbsData.setPlanFinish(wbsPlanDate);
 		}
 		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPnalStart().getTime();
-		int days = (int) difference / (24 * 60 * 60 * 1000);
+		int days = (int) (difference / (24 * 60 * 60 * 1000));
 		wbsData.setDuration(days);
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
@@ -106,7 +106,7 @@ public class PrimaveraDataServiceUtils {
 				activityData.setPlanStart(planStart);
 				activityData.setPlanFinish(planFinish);
 				difference = planFinish.getTime() - planStart.getTime();
-				days = (int) difference / (24 * 60 * 60 * 1000);
+				days = (int) (difference / (24 * 60 * 60 * 1000));
 				activityData.setDuration(days);
 				wbsData.addActivity(activityData);
 			}

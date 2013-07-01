@@ -48,14 +48,14 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.HeaderGroupConfig;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
-public class GanttExample implements IsWidget {
+public class PrimaveraGantt implements IsWidget {
 
-	public GanttExample(GanttData data){
+	public PrimaveraGantt(GanttData data) {
 		this.ganttData = data;
 	}
-	
+
 	private GanttData ganttData;
-	
+
 	public interface GanttExampleStyle extends CssResource {
 	}
 
@@ -65,24 +65,22 @@ public class GanttExample implements IsWidget {
 	}
 
 	@SuppressWarnings("unused")
-	private static final GanttExampleResources resources = GWT
-			.create(GanttExampleResources.class);
+	private static final GanttExampleResources resources = GWT.create(GanttExampleResources.class);
 
 	private Gantt<Task, Dependency> gantt;
 	private static final TaskProps props = GWT.create(TaskProps.class);
-	private static final DependencyProps depProps = GWT
-			.create(DependencyProps.class);
+	private static final DependencyProps depProps = GWT.create(DependencyProps.class);
 	ListStore<Task> taskStore;
 
 	private TreeStore<Task> dataTaskStore;
 	private ListStore<Dependency> dataDepStore;
-	
+
 	@Override
 	public Widget asWidget() {
-		//resources
-		
+		// resources
+
 		IDemoData data;
-		if (ganttData!=null)
+		if (ganttData != null)
 			data = new DemoData3(ganttData);
 		else
 			data = new DemoData2();
@@ -135,35 +133,30 @@ public class GanttExample implements IsWidget {
 		// Create the Gxt Scheduler
 		gantt = new Gantt<Task, Dependency>(dataTaskStore, dataDepStore, config) {
 			@Override
-			public Dependency createDependencyModel(Task fromTask, Task toTask,
-					DependencyType type) {
-				return new Dependency(String.valueOf(new Date().getTime()),
-						fromTask.getId(), toTask.getId(), type);
+			public Dependency createDependencyModel(Task fromTask, Task toTask, DependencyType type) {
+				return new Dependency(String.valueOf(new Date().getTime()), fromTask.getId(), toTask.getId(), type);
 			};
 
 			@Override
-			public Task createTaskModel(String id, Date startDateTime,
-					int duration) {
-				return new Task(id, "New Task", startDateTime, duration, 0,
-						TaskType.LEAF);
+			public Task createTaskModel(String id, Date startDateTime, int duration) {
+				return new Task(id, "New Task", startDateTime, duration, 0, TaskType.LEAF);
 			}
 
 		};
 
-		//развернуть все
-//		gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {
-//			@Override
-//			public void onViewReady(ViewReadyEvent event) {
-//				((TreeGrid<Task>) gantt.getLeftGrid()).expandAll();
-//			}
-//		});
+		// развернуть все
+		// gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {
+		// @Override
+		// public void onViewReady(ViewReadyEvent event) {
+		// ((TreeGrid<Task>) gantt.getLeftGrid()).expandAll();
+		// }
+		// });
 
 		DateWrapper dwStart = new DateWrapper(ganttData.getDateStart()).clearTime();
 		DateWrapper dwFinish = new DateWrapper(ganttData.getDateFinish()).clearTime();
 		// Set start and end date.
 		gantt.setStartEnd(dwStart.addDays(-7).asDate(), dwFinish.addDays(7).asDate());
 
-		
 		ContentPanel cp = new ContentPanel();
 		cp.setHeadingText("Диаграмма ганта");
 		// cp.getHeader().setIcon(ExampleImages.INSTANCE.table());
@@ -176,8 +169,8 @@ public class GanttExample implements IsWidget {
 		vc.add(gantt, new VerticalLayoutData(1, 1));
 		return cp;
 	}
-	
-	private void setData(IDemoData data){
+
+	private void setData(IDemoData data) {
 		dataTaskStore = new TreeStore<Task>(props.key());
 		Task root = data.getTasks();
 		for (Task base : root.getChildren()) {
@@ -187,8 +180,7 @@ public class GanttExample implements IsWidget {
 			}
 		}
 
-		dataDepStore = new ListStore<Dependency>(
-				depProps.key());
+		dataDepStore = new ListStore<Dependency>(depProps.key());
 		dataDepStore.addAll(data.getDependencies());
 	}
 
@@ -202,7 +194,7 @@ public class GanttExample implements IsWidget {
 		demo1Button.addSelectHandler(new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				if (demo1Button.getValue()){
+				if (demo1Button.getValue()) {
 					setData(new DemoData1());
 					gantt.refresh();
 				}
@@ -214,14 +206,14 @@ public class GanttExample implements IsWidget {
 		demo2Button.addSelectHandler(new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				if (demo2Button.getValue()){
+				if (demo2Button.getValue()) {
 					setData(new DemoData2());
 					gantt.setTreeStore(dataTaskStore);
 					gantt.refresh();
 				}
 			}
 		});
-		
+
 		group.add(demo1Button);
 		tbar.add(demo1Button);
 
@@ -236,16 +228,14 @@ public class GanttExample implements IsWidget {
 	private ColumnModel<Task> createStaticColumns() {
 		List<ColumnConfig<Task, ?>> configs = new ArrayList<ColumnConfig<Task, ?>>();
 
-		ColumnConfig<Task, ?> column = new ColumnConfig<Task, String>(
-				props.name());
+		ColumnConfig<Task, ?> column = new ColumnConfig<Task, String>(props.name());
 		column.setHeader("Работа");
 		column.setWidth(160);
 		column.setSortable(true);
 		column.setResizable(true);
 		configs.add(column);
 
-		ColumnConfig<Task, Date> column2 = new ColumnConfig<Task, Date>(
-				props.startDateTime());
+		ColumnConfig<Task, Date> column2 = new ColumnConfig<Task, Date>(props.startDateTime());
 		column2.setHeader("Начало");
 		column2.setWidth(90);
 		column2.setSortable(true);
@@ -253,16 +243,14 @@ public class GanttExample implements IsWidget {
 		column2.setCell(new DateCell(DateTimeFormat.getFormat("yyyy-MM-dd")));
 		configs.add(column2);
 
-		ColumnConfig<Task, Integer> column3 = new ColumnConfig<Task, Integer>(
-				props.duration());
+		ColumnConfig<Task, Integer> column3 = new ColumnConfig<Task, Integer>(props.duration());
 		column3.setHeader("Продолж.");
 		column3.setWidth(70);
 		column3.setSortable(true);
 		column3.setResizable(true);
 		configs.add(column3);
 
-		ColumnConfig<Task, Integer> column4 = new ColumnConfig<Task, Integer>(
-				props.percentDone());
+		ColumnConfig<Task, Integer> column4 = new ColumnConfig<Task, Integer>(props.percentDone());
 		column4.setHeader("Вып. %");
 		column4.setWidth(60);
 		column4.setSortable(true);
@@ -270,12 +258,10 @@ public class GanttExample implements IsWidget {
 		configs.add(column4);
 
 		ColumnModel cm = new ColumnModel(configs);
-		cm.addHeaderGroup(0, 0, new HeaderGroupConfig("Описание работ", 1,
-				4));
+		cm.addHeaderGroup(0, 0, new HeaderGroupConfig("Описание работ", 1, 4));
 
 		return cm;
 	}
-
 
 	private void processFolder(TreeStore<Task> store, Task folder) {
 		for (Task child : folder.getChildren()) {

@@ -25,4 +25,5 @@
       </div>
     </noscript>
 	
-	<div id="ganttDemo"></div>
+    <div id="ganttParams"></div>
+    <div id="ganttDemo"></div>

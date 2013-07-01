@@ -1,37 +1,60 @@
 package ru.ask.primaview.gantt.demo.client;
 
-import ru.ask.primaview.gantt.demo.client.bacisgantt.GanttExample;
+import ru.ask.primaview.gantt.demo.client.bacisgantt.PrimaveraGantt;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.Container;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class AskGanttModule implements EntryPoint {
 
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-	
-	
 	public void onModuleLoad() {
-//		final Label l = new Label();
-//		l.setText("test1");
-//		RootPanel.get("ganttDemo").add(l);
-		greetingService.getWbsDataList("test2", new AsyncCallback<GanttData>() {
-			
-			@Override
-			public void onSuccess(GanttData data) {
-				GanttExample gantt = new GanttExample(data);
-				RootPanel.get("ganttDemo").add(gantt);				
-			}
-			
-			@Override
-			public void onFailure(Throwable arg0) {
-//				l.setText("error");
-			}
-		});
+		Container idInput = getInputIdContainer();
+		RootPanel.get("ganttParams").add(idInput);
 	}
-	
+
+	private Container getInputIdContainer() {
+		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
+		TextField idText = new TextField();
+		idText.setText("561");
+		container.add(new FieldLabel(idText, "Введите ид проекта"));
+		TextButton button = new TextButton("Построить график");
+		SelectHandler sh = new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				greetingService.getWbsDataList("test2", new AsyncCallback<GanttData>() {
+
+					@Override
+					public void onSuccess(GanttData data) {
+						PrimaveraGantt gantt = new PrimaveraGantt(data);
+						RootPanel.get("ganttDemo").clear();
+						RootPanel.get("ganttDemo").add(gantt);
+					}
+
+					@Override
+					public void onFailure(Throwable arg0) {
+						AlertMessageBox alert = new AlertMessageBox("Ошибка",
+								"Проблема при получении информации о проекте");
+						alert.show();
+					}
+				});
+			}
+		};
+		button.addSelectHandler(sh);
+		container.add(button);
+		return container;
+	}
+
 }
