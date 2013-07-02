@@ -23,8 +23,6 @@ import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class AskGanttModule implements EntryPoint {
 
@@ -95,25 +93,19 @@ public class AskGanttModule implements EntryPoint {
 
 		ListView<ProjectData, String> listView = new ListView<ProjectData, String>(store, valueProvider);
 
-		ComboBox<ProjectData> combo = new ComboBox<ProjectData>(store, labelProvider, listView);
+		final ComboBox<ProjectData> combo = new ComboBox<ProjectData>(store, labelProvider, listView);
 
 		combo.setEditable(false);
-		container.add(combo);
 		combo.setWidth(300);
-		RootPanel.get(GANTT_PARAMS).add(container);
-	}
 
-	private Container getInputIdContainer() {
-		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
-		final TextField idText = new TextField();
-		idText.setText("561");
-		container.add(new FieldLabel(idText, "Введите ид проекта"));
+		container.add(combo);
+
 		TextButton button = new TextButton("Построить график");
 		SelectHandler sh = new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				String projectIdStr = idText.getText();
-				greetingService.getWbsDataList(projectIdStr, new AsyncCallback<GanttData>() {
+				int projectId = combo.getValue().getValue();
+				greetingService.getWbsDataList(projectId, new AsyncCallback<GanttData>() {
 
 					@Override
 					public void onSuccess(GanttData data) {
@@ -133,7 +125,8 @@ public class AskGanttModule implements EntryPoint {
 		};
 		button.addSelectHandler(sh);
 		container.add(button);
-		return container;
+
+		RootPanel.get(GANTT_PARAMS).add(container);
 	}
 
 	private Container getWaitProjectListContainer(String name) {

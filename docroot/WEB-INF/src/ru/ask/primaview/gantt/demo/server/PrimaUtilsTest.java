@@ -9,17 +9,17 @@ import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
 public class PrimaUtilsTest {
 	private static int offset;
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		GreetingServiceImpl service = new GreetingServiceImpl();
-		service.getWbsDataList(String.valueOf(PrimaContants.PROJECT_ID));
+		service.getWbsDataList(PrimaContants.PROJECT_ID);
 	}
-	
+
 	public static void main1(String[] args) {
 		PrimaveraService service = new PrimaveraService();
 
 		int projectId = 561;// Уральская-Советская ж/д №8 561
-		
-		DataProject project =	service.GetProject(projectId);
+
+		DataProject project = service.GetProject(projectId);
 		System.out.println(project.getName());
 		System.out.println("start");
 		DataWBS[] works = service.GetWBS(projectId);
@@ -38,8 +38,7 @@ public class PrimaUtilsTest {
 	}
 
 	private static void addItem(DataWBS wbs, int projectId) {
-		printText("wbsName= %s wbsID=%d projectId=%d", wbs.getName(),
-				wbs.getId(), projectId);
+		printText("wbsName= %s wbsID=%d projectId=%d", wbs.getName(), wbs.getId(), projectId);
 
 		if (wbs.hasActivities()) {
 			DataActivity[] works = wbs.getActivities();
@@ -57,9 +56,8 @@ public class PrimaUtilsTest {
 	}
 
 	private static void addActivity(DataActivity activity, int wbsId) {
-		printText("---->activity %s  wbsId = %d from %s to %s ",
-				activity.getName(), wbsId, activity.getBsStart().toString(),
-				activity.getBsFinish());
+		printText("---->activity %s  wbsId = %d from %s to %s ", activity.getName(), wbsId, activity.getBsStart()
+				.toString(), activity.getBsFinish());
 	}
 
 }
