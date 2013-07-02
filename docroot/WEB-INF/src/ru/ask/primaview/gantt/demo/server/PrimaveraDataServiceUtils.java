@@ -6,6 +6,7 @@ import java.util.List;
 
 import ru.ask.primaview.gantt.demo.server.prima.PrimaContants;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
+import ru.ask.primaview.gantt.demo.server.prima.PrimaveraServiceUtils;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
@@ -17,7 +18,7 @@ import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
 
-	private static final boolean offline = true;
+	private static final boolean offline = false;
 
 	public static List<ProjectData> getProjectsList() {
 		List<ProjectData> list = null;
@@ -37,7 +38,18 @@ public class PrimaveraDataServiceUtils {
 				System.out.println(ex);
 			}
 		} else {
-
+			list = new ArrayList<ProjectData>();
+			PrimaveraService service = new PrimaveraService();
+			DataProject[] projects = service.GetProjectsByPortfolio(
+					PrimaveraServiceUtils.projectsListPortfolio,
+					PrimaveraServiceUtils.projectsListWhere,
+					PrimaveraServiceUtils.projectsListOrder);
+			for (DataProject dataProject : projects) {
+				ProjectData pData = new ProjectData();
+				pData.setName(dataProject.getName());
+				pData.setValue(dataProject.getId());
+				list.add(pData);
+			}
 		}
 		return list;
 	}
