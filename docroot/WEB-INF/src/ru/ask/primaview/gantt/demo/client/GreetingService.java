@@ -1,6 +1,9 @@
 package ru.ask.primaview.gantt.demo.client;
 
+import java.util.List;
+
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
+import ru.ask.primaview.gantt.demo.shared.data.ProjectData;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -11,5 +14,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	GanttData getWbsDataList(String projectIdStr, boolean offline) throws IllegalArgumentException;
+	GanttData getWbsDataList(String projectIdStr) throws IllegalArgumentException;
+
+	List<ProjectData> getProjectsList();
 }

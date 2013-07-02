@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ru.ask.primaview.gantt.demo.server.prima.PrimaContants;
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
@@ -11,21 +12,46 @@ import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
 import ru.ask.primaview.gantt.demo.server.testutils.SerializeTempDataUtils;
 import ru.ask.primaview.gantt.demo.shared.data.ActivityData;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
+import ru.ask.primaview.gantt.demo.shared.data.ProjectData;
 import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
 
-	public static DataWBS[] getWbsArrayFromProject(int projectId, boolean offline, PrimaveraService service) {
+	private static final boolean offline = true;
+
+	public static List<ProjectData> getProjectsList() {
+		List<ProjectData> list = null;
+		if (offline) {
+			list = new ArrayList<ProjectData>();
+			ProjectData pdata = new ProjectData();
+			pdata.setName("Уральская-Советская ж/д №8 561");
+			pdata.setValue(PrimaContants.PROJECT_ID);
+			list.add(pdata);
+			pdata = new ProjectData();
+			pdata.setName("Test2");
+			pdata.setValue(PrimaContants.PROJECT_ID);
+			list.add(pdata);
+			try {
+				Thread.sleep(1000);
+			} catch (Exception ex) {
+				System.out.println(ex);
+			}
+		} else {
+
+		}
+		return list;
+	}
+
+	public static DataWBS[] getWbsArrayFromProject(int projectId) {
 		if (offline) {
 			return SerializeTempDataUtils.getDataWbs(projectId);
 		}
-		if (service == null)
-			service = new PrimaveraService();
+		PrimaveraService service = new PrimaveraService();
 		DataWBS[] works = service.GetWBS(projectId);
 		return works;
 	}
 
-	public static GanttData getFromProject(int projectId, boolean offline) {
+	public static GanttData getFromProject(int projectId) {
 		GanttData data = null;
 		List<WbsData> list = new ArrayList<WbsData>();
 		try {
@@ -42,7 +68,7 @@ public class PrimaveraDataServiceUtils {
 
 			System.out.println(projectName);
 			System.out.println("start");
-			DataWBS[] works = getWbsArrayFromProject(projectId, offline, service);
+			DataWBS[] works = getWbsArrayFromProject(projectId);
 
 			for (int i = 0; i < works.length; i++) {
 				WbsData wbsData = getWbsData(works[i]);

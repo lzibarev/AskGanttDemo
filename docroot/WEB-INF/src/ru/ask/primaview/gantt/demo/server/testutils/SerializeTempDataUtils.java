@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 
 import ru.ask.primaview.gantt.demo.server.PrimaveraDataServiceUtils;
 import ru.ask.primaview.gantt.demo.server.PrimavraTestEmulator;
-import ru.ask.primaview.gantt.demo.server.prima.PrimaCostants;
+import ru.ask.primaview.gantt.demo.server.prima.PrimaContants;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
@@ -45,7 +45,8 @@ public class SerializeTempDataUtils {
 
 	private static Object getObjectFromFile(String fileName) {
 		try {
-			fileName = "/Develop/Liferay/liferay-plugins-sdk-6.1.1/portlets/AskGanttDemo-portlet/docroot/WEB-INF/classes/"+fileName;
+			fileName = "/Develop/Liferay/liferay-plugins-sdk-6.1.1/portlets/AskGanttDemo-portlet/docroot/WEB-INF/classes/"
+					+ fileName;
 			ObjectInputStream ois = null;
 			try {
 				FileInputStream fis = new FileInputStream(fileName);
@@ -87,16 +88,16 @@ public class SerializeTempDataUtils {
 
 	private static void serializeSourceData() {
 		System.out.println("SeriazileTempDataUtils.serializeSourceData()");
-		String fileName = getSourceDataFileName(PrimaCostants.PROJECT_ID);
-		Object array = PrimaveraDataServiceUtils.getWbsArrayFromProject(PrimaCostants.PROJECT_ID, true, null);
+		String fileName = getSourceDataFileName(PrimaContants.PROJECT_ID);
+		Object array = PrimaveraDataServiceUtils.getWbsArrayFromProject(PrimaContants.PROJECT_ID);
 		serializeAndSaveObject(array, fileName);
 		System.out.println("finish");
 	}
-	
-	public static DataWBS[] getDataWbs(int projectId){
+
+	public static DataWBS[] getDataWbs(int projectId) {
 		Object object = getObjectFromFile(getSourceDataFileName(projectId));
 		if (object instanceof DataWBS[]) {
-			return (DataWBS[])object;
+			return (DataWBS[]) object;
 		}
 		return null;
 	}
@@ -107,7 +108,7 @@ public class SerializeTempDataUtils {
 		if (testMode)
 			data = PrimavraTestEmulator.getTempData();
 		else
-			data = PrimaveraDataServiceUtils.getFromProject(PrimaCostants.PROJECT_ID, true);
+			data = PrimaveraDataServiceUtils.getFromProject(PrimaContants.PROJECT_ID);
 		testSerializationData(data);
 	}
 }
