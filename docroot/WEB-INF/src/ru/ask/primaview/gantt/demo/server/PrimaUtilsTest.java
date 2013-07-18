@@ -5,13 +5,14 @@ import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataActivity;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataProject;
 import ru.ask.primaview.gantt.demo.server.prima.utility.DataWBS;
+import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
 
 public class PrimaUtilsTest {
 	private static int offset;
 
 	public static void main(String[] args) {
 		GreetingServiceImpl service = new GreetingServiceImpl();
-		service.getWbsDataList(PrimaContants.PROJECT_ID);
+		service.getWbsDataList(PrimaContants.PROJECT_ID, ScaleConstants.DAY);
 	}
 
 	public static void main1(String[] args) {

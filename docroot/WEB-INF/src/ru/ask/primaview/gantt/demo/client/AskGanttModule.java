@@ -5,6 +5,7 @@ import java.util.List;
 import ru.ask.primaview.gantt.demo.client.bacisgantt.PrimaveraGantt;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 import ru.ask.primaview.gantt.demo.shared.data.ProjectData;
+import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -17,6 +18,7 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
@@ -57,6 +59,20 @@ public class AskGanttModule implements EntryPoint {
 
 	private void fillProjectList(List<ProjectData> list) {
 		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
+
+		final ComboBox<ProjectData> combo = getProjectComboBox(list);
+
+
+		container.add(combo);
+
+		TextButton button = getBuildGattButton(combo);
+		
+		container.add(button);
+
+		RootPanel.get(GANTT_PARAMS).add(container);
+	}
+	
+	private ComboBox<ProjectData> getProjectComboBox(List<ProjectData> list){
 		ListStore<ProjectData> store = new ListStore<ProjectData>(new ModelKeyProvider<ProjectData>() {
 
 			@Override
@@ -92,30 +108,38 @@ public class AskGanttModule implements EntryPoint {
 		};
 
 		ListView<ProjectData, String> listView = new ListView<ProjectData, String>(store, valueProvider);
-
-		final ComboBox<ProjectData> combo = new ComboBox<ProjectData>(store, labelProvider, listView);
-
+		
+		ComboBox<ProjectData> combo = new ComboBox<ProjectData>(store, labelProvider, listView);
 		combo.setEditable(false);
 		combo.setWidth(300);
+		return combo;
+	}
 
-		container.add(combo);
-
+	private TextButton getBuildGattButton(final ComboBox<ProjectData> combo){
 		TextButton button = new TextButton("Построить график");
 		SelectHandler sh = new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
 				int projectId = combo.getValue().getValue();
-				greetingService.getWbsDataList(projectId, new AsyncCallback<GanttData>() {
+				final AutoProgressMessageBox box = new AutoProgressMessageBox("Запрос данных на сервере",
+						"Это может занять некоторое время");
+				box.setProgressText("...");
+				box.auto();
+				box.show();
+
+				greetingService.getWbsDataList(projectId, ScaleConstants.MONTH, new AsyncCallback<GanttData>() {
 
 					@Override
 					public void onSuccess(GanttData data) {
 						PrimaveraGantt gantt = new PrimaveraGantt(data);
 						RootPanel.get(GANTT_DEMO).clear();
 						RootPanel.get(GANTT_DEMO).add(gantt);
+						box.hide();
 					}
 
 					@Override
 					public void onFailure(Throwable arg0) {
+						box.hide();
 						AlertMessageBox alert = new AlertMessageBox("Ошибка",
 								"Проблема при получении информации о проекте");
 						alert.show();
@@ -124,11 +148,9 @@ public class AskGanttModule implements EntryPoint {
 			}
 		};
 		button.addSelectHandler(sh);
-		container.add(button);
-
-		RootPanel.get(GANTT_PARAMS).add(container);
+		return button;
 	}
-
+	
 	private Container getWaitProjectListContainer(String name) {
 		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
 		Label lable = new Label();

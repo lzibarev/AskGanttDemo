@@ -13,6 +13,7 @@ import ru.ask.primaview.gantt.demo.client.dummydata.IDemoData;
 import ru.ask.primaview.gantt.demo.client.dummydata.Task;
 import ru.ask.primaview.gantt.demo.client.dummydata.TaskProps;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
+import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
 
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
@@ -29,7 +30,9 @@ import com.scheduler.client.core.TimeResolution.Unit;
 import com.scheduler.client.core.config.SchedulerConfig.ResizeHandle;
 import com.scheduler.client.core.timeaxis.TimeAxisGenerator;
 import com.scheduler.client.core.timeaxis.preconfig.DayTimeAxisGenerator;
+import com.scheduler.client.core.timeaxis.preconfig.MonthTimeAxisGenerator;
 import com.scheduler.client.core.timeaxis.preconfig.WeekTimeAxisGenerator;
+import com.scheduler.client.core.timeaxis.preconfig.YearTimeAxisGenerator;
 import com.scheduler.client.zone.WeekendZoneGenerator;
 import com.scheduler.client.zone.ZoneGeneratorInt;
 import com.sencha.gxt.core.client.util.DateWrapper;
@@ -89,9 +92,7 @@ public class PrimaveraGantt implements IsWidget {
 		GanttConfig config = new GanttConfig();
 		// ColumnModel for left static columns
 		config.leftColumns = createStaticColumns();
-		ArrayList<TimeAxisGenerator> headers = new ArrayList<TimeAxisGenerator>();
-		headers.add(new WeekTimeAxisGenerator("MMM d"));
-		headers.add(new DayTimeAxisGenerator("EEE"));
+		ArrayList<TimeAxisGenerator> headers = getTimeHeaders();
 		config.timeHeaderConfig = headers;
 		// Enable task resize
 		config.resizeHandle = ResizeHandle.NONE;
@@ -170,6 +171,19 @@ public class PrimaveraGantt implements IsWidget {
 		return cp;
 	}
 
+	private ArrayList<TimeAxisGenerator> getTimeHeaders(){
+		ArrayList<TimeAxisGenerator> headers = new ArrayList<TimeAxisGenerator>();
+		String scale = ganttData.getScale(); 
+		if (scale.equals(ScaleConstants.DAY)){
+			headers.add(new WeekTimeAxisGenerator("MMM d"));
+			headers.add(new DayTimeAxisGenerator("EEE"));
+		}else if (scale.equals(ScaleConstants.MONTH)){
+			headers.add(new YearTimeAxisGenerator("yyyy"));
+			headers.add(new MonthTimeAxisGenerator("MMM"));
+		}
+		return headers;
+	}
+	
 	private void setData(IDemoData data) {
 		dataTaskStore = new TreeStore<Task>(props.key());
 		Task root = data.getTasks();
