@@ -31,11 +31,6 @@ public class PrimaveraDataServiceUtils {
 			pdata.setName("Test2");
 			pdata.setValue(PrimaContants.PROJECT_ID_STR);
 			list.add(pdata);
-			try {
-				Thread.sleep(1000);
-			} catch (Exception ex) {
-				System.out.println(ex);
-			}
 		} else {
 
 		}

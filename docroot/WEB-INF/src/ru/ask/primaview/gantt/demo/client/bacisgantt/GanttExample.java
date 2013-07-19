@@ -16,8 +16,6 @@ import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
-import com.gantt.client.config.GanttConfig.DependencyType;
-import com.gantt.client.config.GanttConfig.TaskType;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -133,22 +131,7 @@ public class GanttExample implements IsWidget {
 		config.zoneGenerators = zoneGenerators;
 
 		// Create the Gxt Scheduler
-		gantt = new Gantt<Task, Dependency>(dataTaskStore, dataDepStore, config) {
-			@Override
-			public Dependency createDependencyModel(Task fromTask, Task toTask,
-					DependencyType type) {
-				return new Dependency(String.valueOf(new Date().getTime()),
-						fromTask.getId(), toTask.getId(), type);
-			};
-
-			@Override
-			public Task createTaskModel(String id, Date startDateTime,
-					int duration) {
-				return new Task(id, "New Task", startDateTime, duration, 0,
-						TaskType.LEAF);
-			}
-
-		};
+		gantt = new Gantt<Task, Dependency>(dataTaskStore, dataDepStore, config);
 
 		//развернуть все
 //		gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {

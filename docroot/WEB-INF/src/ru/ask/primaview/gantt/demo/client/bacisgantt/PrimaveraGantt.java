@@ -16,7 +16,6 @@ import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
 
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
-import com.gantt.client.config.GanttConfig.DependencyType;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -127,18 +126,7 @@ public class PrimaveraGantt implements IsWidget {
 		config.zoneGenerators = zoneGenerators;
 
 		// Create the Gxt Scheduler
-		gantt = new Gantt<Task, Dependency>(dataTaskStore, dataDepStore, config) {
-			@Override
-			public Dependency createDependencyModel(Task fromTask, Task toTask, DependencyType type) {
-				return null;
-			};
-
-			@Override
-			public Task createTaskModel(String id, Date startDateTime, int duration) {
-				return null;
-			}
-
-		};
+		gantt = new GanttPrim(dataTaskStore, dataDepStore, config);
 
 		// развернуть все
 		// gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {
@@ -160,6 +148,19 @@ public class PrimaveraGantt implements IsWidget {
 		cp.setWidget(vc);
 		vc.add(gantt, new VerticalLayoutData(1, 1));
 		return cp;
+	}
+	
+	private static class GanttPrim extends Gantt<Task, Dependency>{
+
+		public GanttPrim(TreeStore<Task> taskStore, ListStore<Dependency> dependecyStore, GanttConfig config) {
+			super(taskStore, dependecyStore, config);
+		}
+	
+		@Override
+		public Date getTaskEndDate(Task task) {
+			return super.getTaskEndDate(task);
+		}
+		
 	}
 	
 	private void setStartEnd(){

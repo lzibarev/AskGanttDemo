@@ -6,7 +6,7 @@ import java.util.Date;
 public abstract class GraphData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected static final Date MINDATE = new Date(0);
+	public static final Date MINDATE = new Date(0);
 
 	protected String name;
 	protected Date planStart;
