@@ -1,8 +1,11 @@
 package ru.ask.primaview.gantt.demo.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.ask.primaview.gantt.demo.client.bacisgantt.PrimaveraGantt;
+import ru.ask.primaview.gantt.demo.client.utils.ComboBoxItem;
+import ru.ask.primaview.gantt.demo.client.utils.ComboBoxService;
 import ru.ask.primaview.gantt.demo.shared.data.GanttData;
 import ru.ask.primaview.gantt.demo.shared.data.ProjectData;
 import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
@@ -12,11 +15,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.data.shared.LabelProvider;
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.ModelKeyProvider;
-import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -45,7 +43,7 @@ public class AskGanttModule implements EntryPoint {
 
 			@Override
 			public void onSuccess(List<ProjectData> list) {
-				fillProjectList(list);
+				showProjectList(list);
 			}
 
 			@Override
@@ -57,77 +55,44 @@ public class AskGanttModule implements EntryPoint {
 		});
 	}
 
-	private void fillProjectList(List<ProjectData> list) {
+	private void showProjectList(List<ProjectData> list) {
 		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
 
 		final ComboBox<ProjectData> combo = getProjectComboBox(list);
 
+		ComboBox<ComboBoxItem> scale = getScaleContainer();
+
+		TextButton button = getBuildGattButton(combo, scale);
 
 		container.add(combo);
-
-		TextButton button = getBuildGattButton(combo);
-		
+		container.add(scale);
 		container.add(button);
 
 		RootPanel.get(GANTT_PARAMS).add(container);
 	}
-	
-	private ComboBox<ProjectData> getProjectComboBox(List<ProjectData> list){
-		ListStore<ProjectData> store = new ListStore<ProjectData>(new ModelKeyProvider<ProjectData>() {
 
-			@Override
-			public String getKey(ProjectData item) {
-				return String.valueOf(item.getValue());
-			}
-		});
-		store.addAll(list);
-		LabelProvider<ProjectData> labelProvider = new LabelProvider<ProjectData>() {
-
-			@Override
-			public String getLabel(ProjectData item) {
-				return item.getName();
-			}
-		};
-
-		ValueProvider<ProjectData, String> valueProvider = new ValueProvider<ProjectData, String>() {
-
-			@Override
-			public void setValue(ProjectData object, String value) {
-				object.setName(value);
-			}
-
-			@Override
-			public String getValue(ProjectData object) {
-				return object.getName();
-			}
-
-			@Override
-			public String getPath() {
-				return null;
-			}
-		};
-
-		ListView<ProjectData, String> listView = new ListView<ProjectData, String>(store, valueProvider);
-		
-		ComboBox<ProjectData> combo = new ComboBox<ProjectData>(store, labelProvider, listView);
+	private ComboBox<ProjectData> getProjectComboBox(List<ProjectData> list) {
+		ComboBoxService<ProjectData> service = new ComboBoxService<ProjectData>();
+		ComboBox<ProjectData> combo = service.createComboBox(list);
 		combo.setEditable(false);
 		combo.setWidth(300);
 		return combo;
 	}
 
-	private TextButton getBuildGattButton(final ComboBox<ProjectData> combo){
+	private TextButton getBuildGattButton(final ComboBox<ProjectData> combo, final ComboBox<ComboBoxItem> scale) {
 		TextButton button = new TextButton("Построить график");
 		SelectHandler sh = new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				int projectId = combo.getValue().getValue();
+				String projectIdStr = combo.getValue().getValue();
+				String scaleStr = scale.getValue().getValue();
 				final AutoProgressMessageBox box = new AutoProgressMessageBox("Запрос данных на сервере",
 						"Это может занять некоторое время");
 				box.setProgressText("...");
 				box.auto();
 				box.show();
 
-				greetingService.getWbsDataList(projectId, ScaleConstants.MONTH, new AsyncCallback<GanttData>() {
+				greetingService.getWbsDataList(projectIdStr, scaleStr, new AsyncCallback<GanttData>() {
 
 					@Override
 					public void onSuccess(GanttData data) {
@@ -150,11 +115,23 @@ public class AskGanttModule implements EntryPoint {
 		button.addSelectHandler(sh);
 		return button;
 	}
-	
+
+	private ComboBox<ComboBoxItem> getScaleContainer() {
+		List<ComboBoxItem> list = new ArrayList<ComboBoxItem>();
+		list.add(new ComboBoxItem(ScaleConstants.MONTH, "По месяцам"));
+		list.add(new ComboBoxItem(ScaleConstants.DAY, "По дням"));
+		ComboBoxService<ComboBoxItem> service = new ComboBoxService<ComboBoxItem>();
+		ComboBox<ComboBoxItem> combo = service.createComboBox(list);
+		combo.setEditable(false);
+		combo.setWidth(300);
+		return combo;
+	}
+
 	private Container getWaitProjectListContainer(String name) {
 		HorizontalLayoutContainer container = new HorizontalLayoutContainer();
 		Label lable = new Label();
 		lable.setText(name);
+		lable.setWidth("300");
 		container.add(lable);
 		return container;
 	}

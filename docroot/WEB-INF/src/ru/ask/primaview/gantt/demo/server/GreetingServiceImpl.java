@@ -12,8 +12,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
 	@Override
-	public GanttData getWbsDataList(int projectId, String scale) throws IllegalArgumentException {
-		System.out.println("GreetingServiceImpl.getWbsDataList() projectId=" + projectId);
+	public GanttData getWbsDataList(String projectIdStr, String scale) throws IllegalArgumentException {
+		System.out.println("GreetingServiceImpl.getWbsDataList() projectId=" + projectIdStr);
+		int projectId = Integer.parseInt(projectIdStr);
 		GanttData data = PrimaveraDataServiceUtils.getFromProject(projectId);
 		data.setScale(scale);
 		return data;

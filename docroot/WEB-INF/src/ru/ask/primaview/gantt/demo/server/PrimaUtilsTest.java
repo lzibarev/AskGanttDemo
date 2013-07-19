@@ -12,7 +12,7 @@ public class PrimaUtilsTest {
 
 	public static void main(String[] args) {
 		GreetingServiceImpl service = new GreetingServiceImpl();
-		service.getWbsDataList(PrimaContants.PROJECT_ID, ScaleConstants.DAY);
+		service.getWbsDataList(PrimaContants.PROJECT_ID_STR, ScaleConstants.DAY);
 	}
 
 	public static void main1(String[] args) {

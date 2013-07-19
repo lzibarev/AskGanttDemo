@@ -25,11 +25,11 @@ public class PrimaveraDataServiceUtils {
 			list = new ArrayList<ProjectData>();
 			ProjectData pdata = new ProjectData();
 			pdata.setName("Уральская-Советская ж/д №8 561");
-			pdata.setValue(PrimaContants.PROJECT_ID);
+			pdata.setValue(PrimaContants.PROJECT_ID_STR);
 			list.add(pdata);
 			pdata = new ProjectData();
 			pdata.setName("Test2");
-			pdata.setValue(PrimaContants.PROJECT_ID);
+			pdata.setValue(PrimaContants.PROJECT_ID_STR);
 			list.add(pdata);
 			try {
 				Thread.sleep(1000);
