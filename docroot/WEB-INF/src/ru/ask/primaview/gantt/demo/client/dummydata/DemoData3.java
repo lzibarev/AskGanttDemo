@@ -33,7 +33,8 @@ public class DemoData3 implements IDemoData {
 	}
 
 	private Task getTaskByWbs(WbsData wbs, DateWrapper dw) {
-		Task task = new Task(wbs.getName(), wbs.getPlanStart(), wbs.getDuration(), 30, TaskType.PARENT);
+		Task task = new Task(wbs.getName(), wbs.getPlanStart(), wbs.getDuration(), 30,
+				wbs.isMilestone() ? TaskType.MILESTONE : TaskType.PARENT);
 		for (ActivityData activity : wbs.getActivities()) {
 			Task childTask = getTaskByActivity(activity, dw);
 			task.addChild(childTask);
@@ -46,7 +47,8 @@ public class DemoData3 implements IDemoData {
 	}
 
 	private Task getTaskByActivity(ActivityData activity, DateWrapper dw) {
-		Task task = new Task(activity.getName(), activity.getPnalStart(), activity.getDuration(), 30, TaskType.LEAF);
+		Task task = new Task(activity.getName(), activity.getPlanStart(), activity.getDuration(), 30,
+				activity.isMilestone() ? TaskType.MILESTONE : TaskType.LEAF);
 		return task;
 	}
 
