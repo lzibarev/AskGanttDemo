@@ -17,7 +17,6 @@ import ru.ask.primaview.gantt.demo.shared.data.ScaleConstants;
 import com.gantt.client.Gantt;
 import com.gantt.client.config.GanttConfig;
 import com.gantt.client.config.GanttConfig.DependencyType;
-import com.gantt.client.config.GanttConfig.TaskType;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -46,9 +45,9 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.HeaderGroupConfig;
 
 public class PrimaveraGantt implements IsWidget {
-	
+
 	private static final boolean showComplite = false;
-	
+
 	public PrimaveraGantt(GanttData data) {
 		this.ganttData = data;
 	}
@@ -131,12 +130,12 @@ public class PrimaveraGantt implements IsWidget {
 		gantt = new Gantt<Task, Dependency>(dataTaskStore, dataDepStore, config) {
 			@Override
 			public Dependency createDependencyModel(Task fromTask, Task toTask, DependencyType type) {
-				return new Dependency(String.valueOf(new Date().getTime()), fromTask.getId(), toTask.getId(), type);
+				return null;
 			};
 
 			@Override
 			public Task createTaskModel(String id, Date startDateTime, int duration) {
-				return new Task(id, "New Task", startDateTime, duration, 0, TaskType.LEAF);
+				return null;
 			}
 
 		};
@@ -149,10 +148,7 @@ public class PrimaveraGantt implements IsWidget {
 		// }
 		// });
 
-		DateWrapper dwStart = new DateWrapper(ganttData.getDateStart()).clearTime();
-		DateWrapper dwFinish = new DateWrapper(ganttData.getDateFinish()).clearTime();
-		// Set start and end date.
-		gantt.setStartEnd(dwStart.addDays(-7).asDate(), dwFinish.addDays(7).asDate());
+		setStartEnd();
 
 		ContentPanel cp = new ContentPanel();
 		cp.setHeadingText("Диаграмма ганта");
@@ -165,20 +161,33 @@ public class PrimaveraGantt implements IsWidget {
 		vc.add(gantt, new VerticalLayoutData(1, 1));
 		return cp;
 	}
+	
+	private void setStartEnd(){
+		DateWrapper dwStart = new DateWrapper(ganttData.getDateStart()).clearTime();
+		DateWrapper dwFinish = new DateWrapper(ganttData.getDateFinish()).clearTime();
+		int delta = 4;
+		// Set start and end date.
+		String scale = ganttData.getScale();
+		if (scale.equals(ScaleConstants.DAY)) {
+			gantt.setStartEnd(dwStart.addDays(-delta).asDate(), dwFinish.addDays(delta).asDate());		
+		} else if (scale.equals(ScaleConstants.MONTH)) {
+			gantt.setStartEnd(dwStart.addMonths(-delta).asDate(), dwFinish.addMonths(delta).asDate());		
+		}
+	}
 
-	private ArrayList<TimeAxisGenerator> getTimeHeaders(){
+	private ArrayList<TimeAxisGenerator> getTimeHeaders() {
 		ArrayList<TimeAxisGenerator> headers = new ArrayList<TimeAxisGenerator>();
-		String scale = ganttData.getScale(); 
-		if (scale.equals(ScaleConstants.DAY)){
+		String scale = ganttData.getScale();
+		if (scale.equals(ScaleConstants.DAY)) {
 			headers.add(new WeekTimeAxisGenerator("MMM d"));
 			headers.add(new DayTimeAxisGenerator("EEE"));
-		}else if (scale.equals(ScaleConstants.MONTH)){
+		} else if (scale.equals(ScaleConstants.MONTH)) {
 			headers.add(new YearTimeAxisGenerator("yyyy"));
 			headers.add(new MonthTimeAxisGenerator("MMM"));
 		}
 		return headers;
 	}
-	
+
 	private void setData(IDemoData data) {
 		dataTaskStore = new TreeStore<Task>(props.key());
 		Task root = data.getTasks();
@@ -220,7 +229,7 @@ public class PrimaveraGantt implements IsWidget {
 		column3.setResizable(true);
 		configs.add(column3);
 
-		if (showComplite){
+		if (showComplite) {
 			ColumnConfig<Task, Integer> column4 = new ColumnConfig<Task, Integer>(props.percentDone());
 			column4.setHeader("Вып. %");
 			column4.setWidth(60);
@@ -228,7 +237,7 @@ public class PrimaveraGantt implements IsWidget {
 			column4.setResizable(true);
 			configs.add(column4);
 		}
-		
+
 		ColumnModel cm = new ColumnModel(configs);
 		cm.addHeaderGroup(0, 0, new HeaderGroupConfig("Описание работ", 1, configs.size()));
 
