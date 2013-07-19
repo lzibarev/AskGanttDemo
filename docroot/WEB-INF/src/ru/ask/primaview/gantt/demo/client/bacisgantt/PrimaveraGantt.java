@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ru.ask.primaview.gantt.demo.client.dummydata.DemoData1;
 import ru.ask.primaview.gantt.demo.client.dummydata.DemoData2;
 import ru.ask.primaview.gantt.demo.client.dummydata.DemoData3;
 import ru.ask.primaview.gantt.demo.client.dummydata.Dependency;
@@ -37,19 +36,14 @@ import com.scheduler.client.zone.WeekendZoneGenerator;
 import com.scheduler.client.zone.ZoneGeneratorInt;
 import com.sencha.gxt.core.client.util.DateWrapper;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.button.ToggleButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.HeaderGroupConfig;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class PrimaveraGantt implements IsWidget {
 	
@@ -168,7 +162,6 @@ public class PrimaveraGantt implements IsWidget {
 
 		VerticalLayoutContainer vc = new VerticalLayoutContainer();
 		cp.setWidget(vc);
-		vc.add(createToolBar(), new VerticalLayoutData(1, -1));
 		vc.add(gantt, new VerticalLayoutData(1, 1));
 		return cp;
 	}
@@ -198,45 +191,6 @@ public class PrimaveraGantt implements IsWidget {
 
 		dataDepStore = new ListStore<Dependency>(depProps.key());
 		dataDepStore.addAll(data.getDependencies());
-	}
-
-	// Create ToolBar
-	private ToolBar createToolBar() {
-		ToolBar tbar = new ToolBar();
-		ToggleGroup group = new ToggleGroup();
-
-		final ToggleButton demo1Button = new ToggleButton("Параметр фильтрации 1");
-		demo1Button.setValue(true);
-		demo1Button.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if (demo1Button.getValue()) {
-					setData(new DemoData1());
-					gantt.refresh();
-				}
-			}
-		});
-
-		final ToggleButton demo2Button = new ToggleButton("Параметри фильтрации 2");
-		demo2Button.setValue(false);
-		demo2Button.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if (demo2Button.getValue()) {
-					setData(new DemoData2());
-					gantt.setTreeStore(dataTaskStore);
-					gantt.refresh();
-				}
-			}
-		});
-
-		group.add(demo1Button);
-		tbar.add(demo1Button);
-
-		group.add(demo2Button);
-		tbar.add(demo2Button);
-
-		return tbar;
 	}
 
 	// Creates the static columns
