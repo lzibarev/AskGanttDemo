@@ -12,6 +12,14 @@ public abstract class GraphData implements Serializable {
 	protected Date planStart;
 	protected Date planFinish;
 	protected int duration;
+	protected int complite;
+
+	public GraphData() {
+		planStart = MINDATE;
+		planFinish = MINDATE;
+		duration = 0;
+		complite = 0;
+	}
 
 	public String getName() {
 		return name;
@@ -57,4 +65,11 @@ public abstract class GraphData implements Serializable {
 		return planStart.equals(planFinish);
 	}
 
+	public int getComplite() {
+		return complite;
+	}
+
+	public void setComplite(int value) {
+		complite = value;
+	}
 }

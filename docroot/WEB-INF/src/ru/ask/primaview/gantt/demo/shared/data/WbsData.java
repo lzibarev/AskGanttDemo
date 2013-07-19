@@ -11,9 +11,6 @@ public class WbsData extends GraphData implements Serializable {
 	private List<WbsData> childs;
 
 	public WbsData() {
-		planStart = MINDATE;
-		planFinish = MINDATE;
-		duration = 1;
 		activities = new ArrayList<ActivityData>();
 		childs = new ArrayList<WbsData>();
 	}

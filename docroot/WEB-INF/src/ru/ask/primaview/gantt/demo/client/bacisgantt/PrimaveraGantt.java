@@ -52,7 +52,9 @@ import com.sencha.gxt.widget.core.client.grid.HeaderGroupConfig;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class PrimaveraGantt implements IsWidget {
-
+	
+	private static final boolean showComplite = false;
+	
 	public PrimaveraGantt(GanttData data) {
 		this.ganttData = data;
 	}
@@ -264,15 +266,17 @@ public class PrimaveraGantt implements IsWidget {
 		column3.setResizable(true);
 		configs.add(column3);
 
-		ColumnConfig<Task, Integer> column4 = new ColumnConfig<Task, Integer>(props.percentDone());
-		column4.setHeader("Вып. %");
-		column4.setWidth(60);
-		column4.setSortable(true);
-		column4.setResizable(true);
-		configs.add(column4);
-
+		if (showComplite){
+			ColumnConfig<Task, Integer> column4 = new ColumnConfig<Task, Integer>(props.percentDone());
+			column4.setHeader("Вып. %");
+			column4.setWidth(60);
+			column4.setSortable(true);
+			column4.setResizable(true);
+			configs.add(column4);
+		}
+		
 		ColumnModel cm = new ColumnModel(configs);
-		cm.addHeaderGroup(0, 0, new HeaderGroupConfig("Описание работ", 1, 4));
+		cm.addHeaderGroup(0, 0, new HeaderGroupConfig("Описание работ", 1, configs.size()));
 
 		return cm;
 	}

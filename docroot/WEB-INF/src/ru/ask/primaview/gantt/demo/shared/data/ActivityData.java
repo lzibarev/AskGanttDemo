@@ -7,9 +7,6 @@ public class ActivityData extends GraphData implements Serializable {
 
 
 	public ActivityData() {
-		planStart = MINDATE;
-		planFinish = MINDATE;
-		duration = 1;
-
+		super();
 	}
 }

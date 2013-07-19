@@ -103,7 +103,7 @@ public class PrimaveraDataServiceUtils {
 
 	private static WbsData getWbsData(DataWBS wbs) {
 		WbsData wbsData = new WbsData();
-		wbsData.setName(wbs.getName() + " " + wbs.getId());
+		wbsData.setName(String.format("%s (%d)", wbs.getName(), wbs.getId()));
 
 		if (wbs.getBsStart() != null) {
 			Date wbsPlanDate = new Date(wbs.getBsStart().getTime());
@@ -119,7 +119,7 @@ public class PrimaveraDataServiceUtils {
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
 				ActivityData activityData = new ActivityData();
-				activityData.setName(activity.getName() + " " + activity.getId());
+				activityData.setName(String.format("%s (%d)", activity.getName(), activity.getId()));
 				Date planStart = new Date(activity.getBsStart().getTime());
 				Date planFinish = new Date(activity.getBsFinish().getTime());
 				activityData.setPlanStart(planStart);
