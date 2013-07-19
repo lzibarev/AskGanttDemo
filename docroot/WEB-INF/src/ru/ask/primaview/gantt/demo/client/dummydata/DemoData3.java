@@ -33,7 +33,7 @@ public class DemoData3 implements IDemoData {
 	}
 
 	private Task getTaskByWbs(WbsData wbs, DateWrapper dw) {
-		Task task = new Task(wbs.getName(), wbs.getPnalStart(), wbs.getDuration(), 30, TaskType.PARENT);
+		Task task = new Task(wbs.getName(), wbs.getPlanStart(), wbs.getDuration(), 30, TaskType.PARENT);
 		for (ActivityData activity : wbs.getActivities()) {
 			Task childTask = getTaskByActivity(activity, dw);
 			task.addChild(childTask);

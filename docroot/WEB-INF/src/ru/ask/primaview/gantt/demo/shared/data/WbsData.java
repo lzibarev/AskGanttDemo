@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class WbsData implements Serializable {
+	private static final Date MINDATE = new Date(0); 
 	private static final long serialVersionUID = 1L;
 
 	private List<ActivityData> activities;
@@ -16,8 +17,8 @@ public class WbsData implements Serializable {
 	private int duration;
 
 	public WbsData() {
-		planStart = new Date();
-		planFinish = new Date();
+		planStart = MINDATE;
+		planFinish = MINDATE;
 		duration = 1;
 		activities = new ArrayList<ActivityData>();
 		childs = new ArrayList<WbsData>();
@@ -51,8 +52,12 @@ public class WbsData implements Serializable {
 		planStart = value;
 	}
 
-	public Date getPnalStart() {
+	public Date getPlanStart() {
 		return planStart;
+	}
+	
+	public boolean isPlanStartNull(){
+		return planStart.equals(MINDATE);
 	}
 
 	public void setPlanFinish(Date value) {
@@ -61,6 +66,10 @@ public class WbsData implements Serializable {
 
 	public Date getPlanFinish() {
 		return planFinish;
+	}
+	
+	public boolean isPlanFinishNull(){
+		return planFinish.equals(MINDATE);
 	}
 
 	public void setDuration(int value) {

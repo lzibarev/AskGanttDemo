@@ -91,9 +91,9 @@ public class PrimaveraDataServiceUtils {
 		Date minDate = new Date();
 		Date maxDate = new Date();
 		for (WbsData wbsData : data.getWbss()) {
-			if (wbsData.getPnalStart() != null && minDate.after(wbsData.getPnalStart()))
-				minDate = wbsData.getPnalStart();
-			if (wbsData.getPlanFinish() != null && maxDate.before(wbsData.getPlanFinish()))
+			if (!wbsData.isPlanStartNull() && minDate.after(wbsData.getPlanStart()))
+				minDate = wbsData.getPlanStart();
+			if (!wbsData.isPlanFinishNull() && maxDate.before(wbsData.getPlanFinish()))
 				maxDate = wbsData.getPlanFinish();
 		}
 		data.setDateStart(minDate);
@@ -113,7 +113,7 @@ public class PrimaveraDataServiceUtils {
 			Date wbsPlanDate = new Date(wbs.getBsFinish().getTime());
 			wbsData.setPlanFinish(wbsPlanDate);
 		}
-		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPnalStart().getTime();
+		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPlanStart().getTime();
 		int days = (int) (difference / (24 * 60 * 60 * 1000));
 		wbsData.setDuration(days);
 		if (wbs.hasActivities()) {
