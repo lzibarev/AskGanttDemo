@@ -42,7 +42,7 @@ public class PrimaveraDataServiceUtils {
 			for (DataProject dataProject : projects) {
 				ProjectData pData = new ProjectData();
 				pData.setName(dataProject.getName());
-				pData.setValue(dataProject.getId());
+				pData.setValue(String.valueOf(dataProject.getId()));
 				list.add(pData);
 			}
 		}
