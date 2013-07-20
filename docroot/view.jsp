@@ -25,5 +25,20 @@
       </div>
     </noscript>
 	
-    <div id="ganttParams"></div>
-    <div id="ganttDemo"></div>
+	<table>
+		<tr>
+			<td>
+				<div id="ganttParams"></div>
+			</td>
+		</tr>
+		<tr>
+			<td height="30px">
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="ganttDemo"></div>
+			</td>
+		</tr>
+	</table>
