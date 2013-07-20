@@ -11,6 +11,7 @@ public class GanttData implements Serializable {
 	private String name;
 	private Date dateStart;
 	private Date dateFinish;
+	private String scale;
 
 	public GanttData() {
 	}
@@ -49,5 +50,11 @@ public class GanttData implements Serializable {
 
 	public Date getDateFinish() {
 		return dateFinish;
+	}
+	public String getScale(){
+		return scale;
+	}
+	public void setScale(String value){
+		this.scale = value;
 	}
 }

@@ -2,25 +2,30 @@ package ru.ask.primaview.gantt.demo.shared.data;
 
 import java.io.Serializable;
 
-public class ProjectData implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private String name;
-	private int value;
+import ru.ask.primaview.gantt.demo.client.utils.IComboBoxItem;
 
+public class ProjectData implements Serializable, IComboBoxItem {
+	private static final long serialVersionUID = 1L;
+
+	private String name;
+	private String value;
+
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String value) {
 		name = value;
 	}
 
-	public int getValue() {
+	@Override
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

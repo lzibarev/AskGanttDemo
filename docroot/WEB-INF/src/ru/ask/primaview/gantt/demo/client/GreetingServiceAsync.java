@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface GreetingServiceAsync {
 
-	void getWbsDataList(int projectId, AsyncCallback<GanttData> callback)
+	void getWbsDataList(String projectIdStr, String scale, AsyncCallback<GanttData> callback)
 			throws IllegalArgumentException;
 
 	void getProjectsList(AsyncCallback<List<ProjectData>> callback);

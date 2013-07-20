@@ -26,17 +26,12 @@ public class PrimaveraDataServiceUtils {
 			list = new ArrayList<ProjectData>();
 			ProjectData pdata = new ProjectData();
 			pdata.setName("Уральская-Советская ж/д №8 561");
-			pdata.setValue(PrimaContants.PROJECT_ID);
+			pdata.setValue(PrimaContants.PROJECT_ID_STR);
 			list.add(pdata);
 			pdata = new ProjectData();
 			pdata.setName("Test2");
-			pdata.setValue(PrimaContants.PROJECT_ID);
+			pdata.setValue(PrimaContants.PROJECT_ID_STR);
 			list.add(pdata);
-			try {
-				Thread.sleep(1000);
-			} catch (Exception ex) {
-				System.out.println(ex);
-			}
 		} else {
 			list = new ArrayList<ProjectData>();
 			PrimaveraService service = new PrimaveraService();
@@ -103,9 +98,9 @@ public class PrimaveraDataServiceUtils {
 		Date minDate = new Date();
 		Date maxDate = new Date();
 		for (WbsData wbsData : data.getWbss()) {
-			if (wbsData.getPnalStart() != null && minDate.after(wbsData.getPnalStart()))
-				minDate = wbsData.getPnalStart();
-			if (wbsData.getPlanFinish() != null && maxDate.before(wbsData.getPlanFinish()))
+			if (!wbsData.isPlanStartNull() && minDate.after(wbsData.getPlanStart()))
+				minDate = wbsData.getPlanStart();
+			if (!wbsData.isPlanFinishNull() && maxDate.before(wbsData.getPlanFinish()))
 				maxDate = wbsData.getPlanFinish();
 		}
 		data.setDateStart(minDate);
@@ -115,7 +110,7 @@ public class PrimaveraDataServiceUtils {
 
 	private static WbsData getWbsData(DataWBS wbs) {
 		WbsData wbsData = new WbsData();
-		wbsData.setName(wbs.getName() + " " + wbs.getId());
+		wbsData.setName(String.format("%s (%d)", wbs.getName(), wbs.getId()));
 
 		if (wbs.getBsStart() != null) {
 			Date wbsPlanDate = new Date(wbs.getBsStart().getTime());
@@ -125,13 +120,13 @@ public class PrimaveraDataServiceUtils {
 			Date wbsPlanDate = new Date(wbs.getBsFinish().getTime());
 			wbsData.setPlanFinish(wbsPlanDate);
 		}
-		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPnalStart().getTime();
+		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPlanStart().getTime();
 		int days = (int) (difference / (24 * 60 * 60 * 1000));
 		wbsData.setDuration(days);
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
 				ActivityData activityData = new ActivityData();
-				activityData.setName(activity.getName() + " " + activity.getId());
+				activityData.setName(String.format("%s (%d)", activity.getName(), activity.getId()));
 				Date planStart = new Date(activity.getBsStart().getTime());
 				Date planFinish = new Date(activity.getBsFinish().getTime());
 				activityData.setPlanStart(planStart);
