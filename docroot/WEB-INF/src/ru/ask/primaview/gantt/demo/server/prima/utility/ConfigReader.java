@@ -37,8 +37,28 @@ public class ConfigReader
 			throw new IOException ("Unable to read properties file at " + fullpath);
 	}
 
+//	private static String _GetPropertiesPath (String filename) throws Exception
+//	{
+//		return "C:/Projects/primavera/"+ filename;
+//	}
+	
+	private final static String	_PrimaviewAltPropLocation	= System.getProperty ("user.home") + File.separator + ".primaview";
+
 	private static String _GetPropertiesPath (String filename) throws Exception
 	{
-		return "C:/Projects/primavera/"+ filename;
+		/* Apache Tomcat dependent part */
+		String appServerPath = System.getProperty ("catalina.home");
+		if (appServerPath != null)
+			return appServerPath + File.separator + "conf" + File.separator + filename;
+
+		/* /Apache Tomcat dependent part */
+
+		// ищем настройки в запасном месте
+		File path = new File (_PrimaviewAltPropLocation);
+		if (!path.exists ()){
+			return "C:/Projects/primavera/"+ filename;
+		}
+		return path + File.separator + filename;
 	}
+
 }
