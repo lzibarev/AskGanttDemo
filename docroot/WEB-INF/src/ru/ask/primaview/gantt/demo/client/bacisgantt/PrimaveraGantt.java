@@ -30,8 +30,10 @@ import com.scheduler.client.core.timeaxis.preconfig.DayTimeAxisGenerator;
 import com.scheduler.client.core.timeaxis.preconfig.MonthTimeAxisGenerator;
 import com.scheduler.client.core.timeaxis.preconfig.WeekTimeAxisGenerator;
 import com.scheduler.client.core.timeaxis.preconfig.YearTimeAxisGenerator;
-import com.scheduler.client.zone.WeekendZoneGenerator;
+import com.scheduler.client.zone.Line;
+import com.scheduler.client.zone.LineProperties;
 import com.scheduler.client.zone.ZoneGeneratorInt;
+import com.sencha.gxt.core.client.resources.StyleInjectorHelper;
 import com.sencha.gxt.core.client.util.DateWrapper;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
@@ -54,6 +56,7 @@ public class PrimaveraGantt implements IsWidget {
 	private GanttData ganttData;
 
 	public interface GanttExampleStyle extends CssResource {
+		String todayLineMain();
 	}
 
 	public interface GanttExampleResources extends ClientBundle {
@@ -61,7 +64,6 @@ public class PrimaveraGantt implements IsWidget {
 		GanttExampleStyle css();
 	}
 
-	@SuppressWarnings("unused")
 	private static final GanttExampleResources resources = GWT.create(GanttExampleResources.class);
 
 	private Gantt<Task, Dependency> gantt;
@@ -75,7 +77,6 @@ public class PrimaveraGantt implements IsWidget {
 	@Override
 	public Widget asWidget() {
 		// resources
-
 		IDemoData data;
 		if (ganttData != null)
 			data = new DemoData3(ganttData);
@@ -118,16 +119,11 @@ public class PrimaveraGantt implements IsWidget {
 
 		// Cascade Changes
 		config.cascadeChanges = false;
-
-		// Add zones to weekends
-		ArrayList<ZoneGeneratorInt> zoneGenerators = new ArrayList<ZoneGeneratorInt>();
-		zoneGenerators.add(new WeekendZoneGenerator()); // Create a zone every
-														// weekend
-		config.zoneGenerators = zoneGenerators;
+		config.zoneGenerators = getZones();
 
 		// Create the Gxt Scheduler
 		gantt = new GanttPrim(dataTaskStore, dataDepStore, config);
-
+		gantt.setLineStore(createLines());
 		// развернуть все
 		// gantt.getLeftGrid().addViewReadyHandler(new ViewReadyHandler() {
 		// @Override
@@ -149,6 +145,26 @@ public class PrimaveraGantt implements IsWidget {
 		vc.add(gantt, new VerticalLayoutData(1, 1));
 		return cp;
 	}
+	
+	private List<ZoneGeneratorInt> getZones(){
+		// Add zones to weekends
+		ArrayList<ZoneGeneratorInt> zoneGenerators = new ArrayList<ZoneGeneratorInt>();
+//		zoneGenerators.add(new WeekendZoneGenerator()); // Create a zone every
+		return zoneGenerators;
+	}
+	
+	// Creating the store containing the lines
+    private ListStore<Line> createLines() {
+		StyleInjectorHelper.ensureInjected(resources.css(), true);
+
+        LineProperties lineProps = GWT.create(LineProperties.class);
+        ListStore<Line> store = new ListStore<Line>(lineProps.key());
+        // new Line(Date date,String tooltipText,String customCssStyle)
+        String customCssStyle = resources.css().todayLineMain();
+        Line line = new Line(new Date(), new Date().toString(), customCssStyle);
+        store.add(line);
+        return store;
+    }
 	
 	private static class GanttPrim extends Gantt<Task, Dependency>{
 
