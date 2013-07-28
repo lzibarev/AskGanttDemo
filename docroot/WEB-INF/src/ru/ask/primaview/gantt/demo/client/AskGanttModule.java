@@ -97,6 +97,7 @@ public class AskGanttModule implements EntryPoint {
 					@Override
 					public void onSuccess(GanttData data) {
 						PrimaveraGantt gantt = new PrimaveraGantt(data);
+						RootPanel.get(GANTT_PARAMS).clear();
 						RootPanel.get(GANTT_DEMO).clear();
 						RootPanel.get(GANTT_DEMO).add(gantt);
 						box.hide();

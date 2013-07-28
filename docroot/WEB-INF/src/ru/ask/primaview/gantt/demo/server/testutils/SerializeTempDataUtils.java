@@ -45,11 +45,10 @@ public class SerializeTempDataUtils {
 
 	private static Object getObjectFromFile(String fileName) {
 		try {
-			fileName = "/Develop/Liferay/liferay-plugins-sdk-6.1.1/portlets/AskGanttDemo-portlet/docroot/WEB-INF/classes/"
-					+ fileName;
+			String filePath = "./WEB-INF/classes/"+ fileName;
 			ObjectInputStream ois = null;
 			try {
-				FileInputStream fis = new FileInputStream(fileName);
+				FileInputStream fis = new FileInputStream(filePath);
 				ois = new ObjectInputStream(fis);
 				Object obj = ois.readObject();
 				return obj;
