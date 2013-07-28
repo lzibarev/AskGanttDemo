@@ -5,6 +5,7 @@ import java.util.Date;
 
 import ru.ask.primaview.gantt.demo.server.prima.PrimaveraService;
 
+import com.primavera.common.value.Percent;
 import com.primavera.integration.client.bo.BusinessObjectException;
 import com.primavera.integration.client.bo.object.WBS;
 
@@ -28,29 +29,6 @@ public class DataWBS implements Serializable
 	private DataWBS []				children;
 	private DataActivity []			activities;
 
-	public DataWBS (WBS wbs)
-	{
-		try
-		{
-			id = wbs.getObjectId ().toInteger ();
-			name = wbs.getName ();
-			obs = wbs.getOBSName ();
-			start = wbs.getSummaryActualStartDate ();
-			finish = wbs.getSummaryActualFinishDate ();
-			bsStart = wbs.getSummaryBaselineStartDate ();
-			bsFinish = wbs.getSummaryBaselineFinishDate ();
-
-			completePercent = (int) Math.round (wbs.getSummaryDurationPercentComplete().doubleValue () * 100D);
-
-			children = new DataWBS [0];
-			activities = new DataActivity [0];
-		}
-		catch (BusinessObjectException e)
-		{
-			PrimaveraConnector.writeLog (this.getClass ().getName () + " create failed.", e);
-		}
-	}
-
 	public DataWBS (WBS wbs, boolean recursively)
 	{
 		try
@@ -61,7 +39,16 @@ public class DataWBS implements Serializable
 			start = wbs.getSummaryActualStartDate ();
 			finish = wbs.getSummaryActualFinishDate ();
 	
-//			persentDone = wbs.getSummaryPerformancePercentCompleteByCost().intValue();
+//			try{
+//			Percent percent = wbs.getSummaryDurationPercentOfPlanned();
+//			if (percent==null)
+//				completePercent = 0;
+//			else{
+//				completePercent = (int) Math.round (percent.doubleValue () * 100D);
+//			}
+//			}catch(BusinessObjectException e){
+//				System.out.println(e);
+//			}
 			bsStart = wbs.getSummaryBaselineStartDate ();
 			bsFinish = wbs.getSummaryBaselineFinishDate ();
 
@@ -145,11 +132,15 @@ public class DataWBS implements Serializable
 
 	public boolean hasChildren ()
 	{
+		if (children==null)
+			return false;
 		return this.children.length != 0;
 	}
 
 	public boolean hasActivities ()
 	{
+		if (activities==null)
+			return false;
 		return this.activities.length != 0;
 	}
 

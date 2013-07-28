@@ -41,7 +41,8 @@ public class PrimaveraDataServiceUtils {
 					PrimaveraServiceUtils.projectsListOrder);
 			for (DataProject dataProject : projects) {
 				ProjectData pData = new ProjectData();
-				pData.setName(dataProject.getName());
+				String idStr = String.valueOf(dataProject.getId());
+				pData.setName(dataProject.getName()+" "+idStr);
 				pData.setValue(String.valueOf(dataProject.getId()));
 				list.add(pData);
 			}
@@ -86,6 +87,7 @@ public class PrimaveraDataServiceUtils {
 			data.setName(projectName);
 			setMinMaxDate(data);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			System.out.println(ex);
 		}
 		return data;

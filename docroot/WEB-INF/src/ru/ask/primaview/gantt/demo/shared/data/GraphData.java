@@ -27,6 +27,9 @@ public abstract class GraphData implements Serializable {
 
 	public void setPlanStart(Date value) {
 		planStart = value;
+		if (planStart!=null){
+			//TODO: вызрать обрезалку даты
+		}
 	}
 
 	public Date getPlanStart() {
@@ -62,7 +65,7 @@ public abstract class GraphData implements Serializable {
 	}
 
 	public boolean isMilestone() {
-		return planStart.equals(planFinish);
+		return duration == 0;
 	}
 
 	public int getComplite() {

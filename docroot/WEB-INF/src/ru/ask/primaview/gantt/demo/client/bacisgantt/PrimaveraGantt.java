@@ -101,11 +101,7 @@ public class PrimaveraGantt implements IsWidget {
 	@Override
 	public Widget asWidget() {
 		// resources
-		IDemoData data;
-		if (ganttData != null)
-			data = new DemoData3(ganttData);
-		else
-			data = new DemoData2();
+		IDemoData data = new DemoData3(ganttData);
 		setData(data);
 
 		GanttConfig config = new GanttConfig();
@@ -159,7 +155,7 @@ public class PrimaveraGantt implements IsWidget {
 		setStartEnd();
 
 		ContentPanel cp = new ContentPanel();
-		cp.setHeadingText("Диаграмма ганта");
+		cp.setHeadingText(ganttData.getName());
 		// cp.getHeader().setIcon(ExampleImages.INSTANCE.table());
 		cp.setPixelSize(1000, 460);
 		cp.getElement().setMargins(new Margins(5));
