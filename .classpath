@@ -8,16 +8,16 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GXT-3.0.1"/>
 	<classpathentry kind="con" path="com.liferay.ide.eclipse.server.plugin.container/portlet"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GxtGantt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Primavera6R8.2"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.liferay.ide.eclipse.server.tomcat.runtimeClasspathProvider/Liferay v6.1 CE (Tomcat 7)">
 		<attributes>
-			<attribute name="owner.project.facets" value="jst.web"/>
+			<attribute name="owner.project.facets" value="jst.web;#system#"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 7 (MacOS X Default)">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Liferay v6.1 CE (Tomcat 7) JRE">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Primavera6R8.2"/>
 	<classpathentry kind="output" path="docroot/WEB-INF/classes"/>
 </classpath>

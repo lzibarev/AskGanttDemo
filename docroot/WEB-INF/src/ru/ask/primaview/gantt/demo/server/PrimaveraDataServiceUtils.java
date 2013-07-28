@@ -18,7 +18,7 @@ import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
 
-	private static final boolean offline = false;
+	private static final boolean offline = true;
 
 	public static List<ProjectData> getProjectsList() {
 		List<ProjectData> list = null;
