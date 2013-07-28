@@ -1,4 +1,6 @@
 
 .gwt/
+.svn/
 .settings/
 gwt-unitCache/
+/.classpath
