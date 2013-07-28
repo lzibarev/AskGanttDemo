@@ -58,7 +58,7 @@ public class DataActivity implements Serializable
 	/**
 	 * Процент выполнения работы
 	 */
-	private Integer					completePercent;
+	private int					completePercent;
 
 	/**
 	 * Gets the activity percent complete type: 'Physical', 'Duration', or 'Units'.
@@ -182,7 +182,7 @@ public class DataActivity implements Serializable
 		return name;
 	}
 
-	public Integer getCompletePercent ()
+	public int getCompletePercent ()
 	{
 		return completePercent;
 	}

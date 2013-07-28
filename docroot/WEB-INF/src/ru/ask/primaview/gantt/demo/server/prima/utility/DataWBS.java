@@ -23,6 +23,7 @@ public class DataWBS implements Serializable
 	private Date					finish;
 	private Date					bsStart;
 	private Date					bsFinish;
+	private int completePercent;
 
 	private DataWBS []				children;
 	private DataActivity []			activities;
@@ -38,6 +39,8 @@ public class DataWBS implements Serializable
 			finish = wbs.getSummaryActualFinishDate ();
 			bsStart = wbs.getSummaryBaselineStartDate ();
 			bsFinish = wbs.getSummaryBaselineFinishDate ();
+
+			completePercent = (int) Math.round (wbs.getSummaryDurationPercentComplete().doubleValue () * 100D);
 
 			children = new DataWBS [0];
 			activities = new DataActivity [0];
@@ -57,6 +60,8 @@ public class DataWBS implements Serializable
 			obs = wbs.getOBSName ();
 			start = wbs.getSummaryActualStartDate ();
 			finish = wbs.getSummaryActualFinishDate ();
+	
+//			persentDone = wbs.getSummaryPerformancePercentCompleteByCost().intValue();
 			bsStart = wbs.getSummaryBaselineStartDate ();
 			bsFinish = wbs.getSummaryBaselineFinishDate ();
 
@@ -109,6 +114,13 @@ public class DataWBS implements Serializable
 	public Date getBsFinish ()
 	{
 		return bsFinish;
+	}
+	
+	public int getCompletePercent(){
+		return completePercent;
+	}
+	public void setCompletePercent(int value){
+		completePercent = value;
 	}
 
 	public DataWBS [] getChildren ()

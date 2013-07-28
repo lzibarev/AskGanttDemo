@@ -44,7 +44,8 @@ public class PrimavraTestEmulator {
 		ActivityData activityData = new ActivityData();
 		activityData.setName(name);
 		activityData.setPlanStart(new Date());
-		activityData.setDuration(10);
+		activityData.setDuration(1);
+		activityData.setComplite(0);
 		return activityData;
 	}
 

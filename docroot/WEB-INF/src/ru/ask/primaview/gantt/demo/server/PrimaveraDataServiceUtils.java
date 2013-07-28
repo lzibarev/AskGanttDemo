@@ -18,7 +18,7 @@ import ru.ask.primaview.gantt.demo.shared.data.WbsData;
 
 public class PrimaveraDataServiceUtils {
 
-	private static final boolean offline = true;
+	private static final boolean offline = false;
 
 	public static List<ProjectData> getProjectsList() {
 		List<ProjectData> list = null;
@@ -123,6 +123,7 @@ public class PrimaveraDataServiceUtils {
 		long difference = wbsData.getPlanFinish().getTime() - wbsData.getPlanStart().getTime();
 		int days = (int) (difference / (24 * 60 * 60 * 1000));
 		wbsData.setDuration(days);
+		wbsData.setComplite(wbs.getCompletePercent());
 		if (wbs.hasActivities()) {
 			for (DataActivity activity : wbs.getActivities()) {
 				ActivityData activityData = new ActivityData();
@@ -134,6 +135,7 @@ public class PrimaveraDataServiceUtils {
 				difference = planFinish.getTime() - planStart.getTime();
 				days = (int) (difference / (24 * 60 * 60 * 1000));
 				activityData.setDuration(days);
+				activityData.setComplite(activity.getCompletePercent());
 				wbsData.addActivity(activityData);
 			}
 		}
